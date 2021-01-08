@@ -1,0 +1,22 @@
+greeting: <b>Salom ${uppercase(from.first_name)}!</b>
+
+#=================================================MainMenu
+mainMenu: 📇 Asosiy lavha
+mainMenuOrders: 📦 Mening buyurtmalarim
+mainMenuSearch: 🔍 Tovar qidirish
+mainMenuDiscounts: 📰 Aksiya va yangiliklar
+mainMenuCategories: 📓 Kategoriyalar
+mainMenuContacts: 📱 Aloqa ma'lumotlari
+mainMenuCart: 🛒 Savatcha
+mainMenuLocations: 🗺️ Qayerda sotib olish
+mainMenuBack: ⬅️ Asosiy lavhaga
+#=================================================MainMenu
+
+#=================================================PersonalCabinetMenu
+contactsMenuNumbers:  📲 Telefon raqamlari
+contactsMenuSocials: 💻 Sotsial saytlar
+#=================================================PersonalCabinetMenu
+
+#=================================================LocationsMenu
+LocationsMenuBuy:  📍 Qayerda Sotib Olish
+#=================================================LocationsMenu
