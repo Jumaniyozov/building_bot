@@ -1,5 +1,5 @@
 const Scene = require('telegraf/scenes/base');
-const cleanMessages = require('../helpers/cleaner');
+const {cleanMessages} = require('../helpers');
 
 
 module.exports = (bot, I18n) => {
@@ -7,8 +7,7 @@ module.exports = (bot, I18n) => {
 
 
     mainScene.enter(async (ctx) => {
-        cleanMessages(ctx);
-        ctx.session.message_filter.push((await ctx.message).message_id);
+        await cleanMessages(ctx);
 
         let message = ctx.i18n.t('greeting', {
             ctx: ctx
@@ -20,7 +19,7 @@ module.exports = (bot, I18n) => {
             [`${ctx.i18n.t('mainMenuContacts')}`, `${ctx.i18n.t('mainMenuCart')}`],
             [`${ctx.i18n.t('mainMenuLocations')}`],
         ]
-        
+
         if (ctx.scene.state.start) {
             message = ctx.scene.state.start
         }
@@ -29,8 +28,7 @@ module.exports = (bot, I18n) => {
             parse_mode: 'HTML',
             reply_markup: {
                 keyboard: authMsg,
-                resize_keyboard: true,
-                // one_time_keyboard: true
+                resize_keyboard: true
             }
         })
 
@@ -44,6 +42,10 @@ module.exports = (bot, I18n) => {
 
     mainScene.hears(I18n.match('mainMenuLocations'), ctx => {
        return ctx.scene.enter('locations');
+    })
+
+    mainScene.hears(I18n.match('mainMenuCategories'), ctx => {
+       return ctx.scene.enter('categories');
     })
 
     mainScene.hears(I18n.match('mainMenuBack'), ctx => {

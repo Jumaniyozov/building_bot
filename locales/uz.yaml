@@ -10,13 +10,43 @@ mainMenuContacts: 📱 Aloqa ma'lumotlari
 mainMenuCart: 🛒 Savatcha
 mainMenuLocations: 🗺️ Qayerda sotib olish
 mainMenuBack: ⬅️ Asosiy lavhaga
+
+mainErrorMessage: ⁉️ Kechirasiz jarayonda hato yuz berdi
+
 #=================================================MainMenu
 
 #=================================================PersonalCabinetMenu
-contactsMenuNumbers:  📲 Telefon raqamlari
+contactsMenuNumbers: 📲 Telefon raqamlari
 contactsMenuSocials: 💻 Sotsial saytlar
+contactsMenuSocialsEmpty: ❌ Kechirasiz hozircha ma'lumotlar yo'q
 #=================================================PersonalCabinetMenu
 
 #=================================================LocationsMenu
-LocationsMenuBuy:  📍 Qayerda Sotib Olish
+LocationsMenuBuy: 📍 Qayerda Sotib Olish
 #=================================================LocationsMenu
+
+#=================================================LanguageMenu
+LanguangeMenu: 🇺🇿 Iltimos o'z tilingizni tanlang.
+LanguangeMenuBack: ⬅️ Til tanlashga qaytish
+#=================================================LanguageMenu
+
+#=================================================RegistrationMenu
+RegistrationMenu: 📲 Iltimos ro'yxatdan o'tish uchun o'z raqamingizni kiriting (+998901234567). Yoki kontakt ulashish uchun tugmani bosing.
+RegistrationMenuVerify: 📔 Ulashish
+RegistrationMenuSMS: ✉️ Sizga tasdiqlash kodi bilan xabar yuborildi, iltimos kodni kiriting.
+RegistrationMenuVerifyContact: 📱 Bu sizning raqamingizmi?\:\ <i>${phone_number}</i>
+RegistrationMenuVerifyContactPhone: 📑 Tasdiqlash
+RegistrationMenuBack: ⬅️ Ro'yxatdan o'tishga qaytish
+successfulRegistration: 👋 Salom <i>${name}</i>, Siz muvaffaqiyatli ro'yhatdan o'tdingiz!
+unsuccessfulMessage: ❌ Kechirasiz, hato kodni kiritingiz, iltimos qaytadan urinib ko'ring.
+#=================================================RegistrationMenu
+
+#=================================================CategoriesMenu
+CategoriesMenuLook: 📖 Kategoriyalarni ko'rish
+CategoriesMenuBack: ⬅️ Kategoriyalarga qaytish
+CategoriesMenuEmpty: ❌ Kechirasiz, hozircha kategoriyalar bo'sh.
+#=================================================CategoriesMenu
+
+#=================================================SubCategoriesMenu
+SubCategoriesMenuEmpty: ❌ Kechirasiz, hozircha kategoriya bo'sh.
+#=================================================SubCategoriesMenu

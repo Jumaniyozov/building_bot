@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const ContactData = require("../models/ContactData");
+const {ContactData} = require("../../models");
 
 async function getContacts() {
   try {
