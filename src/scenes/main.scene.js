@@ -17,7 +17,7 @@ module.exports = (bot, I18n) => {
             [`${ctx.i18n.t('mainMenuOrders')}`, `${ctx.i18n.t('mainMenuSearch')}`],
             [`${ctx.i18n.t('mainMenuDiscounts')}`, `${ctx.i18n.t('mainMenuCategories')}`],
             [`${ctx.i18n.t('mainMenuContacts')}`, `${ctx.i18n.t('mainMenuCart')}`],
-            [`${ctx.i18n.t('mainMenuLocations')}`],
+            [`${ctx.i18n.t('mainMenuLocations')}`, `${ctx.i18n.t('mainMenuSettings')}` ],
         ]
 
         if (ctx.scene.state.start) {
@@ -40,12 +40,24 @@ module.exports = (bot, I18n) => {
        return ctx.scene.enter('contacts')
     })
 
+    mainScene.hears(I18n.match('mainMenuSettings'), ctx => {
+       return ctx.scene.enter('settingsMenu')
+    })
+
     mainScene.hears(I18n.match('mainMenuLocations'), ctx => {
        return ctx.scene.enter('locations');
     })
 
     mainScene.hears(I18n.match('mainMenuCategories'), ctx => {
        return ctx.scene.enter('categories');
+    })
+
+    mainScene.hears(I18n.match('mainMenuOrders'), ctx => {
+       return ctx.scene.enter('myOrders');
+    })
+
+    mainScene.hears(I18n.match('mainMenuCart'), ctx => {
+       return ctx.scene.enter('cartEnter');
     })
 
     mainScene.hears(I18n.match('mainMenuBack'), ctx => {

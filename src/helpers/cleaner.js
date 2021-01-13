@@ -2,7 +2,7 @@ cleanMessages = async (ctx) => {
     try {
         if (ctx.session.message_filter && ctx.session.message_filter.length > 0) {
             for (const msg of  ctx.session.message_filter) {
-               await ctx.deleteMessage(msg);
+               ctx.deleteMessage(msg).catch(error => console.error(error.message));
             }
 
             ctx.session.message_filter.splice(0, ctx.session.message_filter.length);

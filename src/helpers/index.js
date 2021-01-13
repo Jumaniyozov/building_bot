@@ -7,6 +7,13 @@ const getCategories = require('./categories/getCategories');
 const sendCategories = require('./categories/sendCategories');
 const getSubCategories = require('./categories/getSubCategories');
 const sendSubCategories = require('./categories/sendSubCategories');
+const getProduct = require('./products/getProduct');
+const getProducts = require('./products/getProducts');
+const sendProducts = require('./products/sendProducts');
+const sendCart = require('./cart/sendCart');
+const getCartList = require('./cart/getCartList');
+const getMyOrders = require('./orders/getMyOrders');
+const sendMyOrders = require('./orders/sendMyOrders');
 
 module.exports = {
     sendLocations,
@@ -17,5 +24,12 @@ module.exports = {
     getCategories,
     sendCategories,
     getSubCategories,
-    sendSubCategories
+    sendSubCategories,
+    getProduct,
+    getProducts,
+    sendProducts,
+    sendCart,
+    getCartList,
+    getMyOrders,
+    sendMyOrders
 }

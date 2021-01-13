@@ -1,4 +1,5 @@
 const Scene = require("telegraf/scenes/base");
+const {getProducts} = require("../helpers");
 const {cleanMessages, sendCategories, sendSubCategories} = require("../helpers");
 
 
@@ -16,6 +17,7 @@ module.exports.categoriesScene = (bot, I18n) => {
             [`${ctx.i18n.t("CategoriesMenuLook")}`],
             [`${ctx.i18n.t("mainMenuBack")}`],
         ];
+
 
         ctx.session.currentCategoryLocationIndex = 0;
           //currentSubCategoryLocationIndex
@@ -90,6 +92,9 @@ module.exports.subCategoriesEnterScene = (bot, I18n) => {
 
     subCategoriesEnterScene.enter(async (ctx) => {
         // await cleanMessages(ctx);
+
+        ctx.session.productLocationIndex = 0;
+
         await sendSubCategories(ctx, bot, ctx.session.subCategoryParentId);
     });
 
@@ -126,9 +131,12 @@ module.exports.subCategoriesEnterScene = (bot, I18n) => {
     subCategoriesEnterScene.action(/^gtp:/, async (ctx) => {
         await ctx.answerCbQuery();
 
-        const categoryId = ctx.update.callback_query.data.split(':')[1];
+        ctx.session.categoryId = ctx.update.callback_query.data.split(':')[1];
 
-        console.log(categoryId);
+
+        ctx.scene.enter('products');
+
+
 
         // await sendSubCategories(ctx, bot, parentId);
     });

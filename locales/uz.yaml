@@ -10,6 +10,7 @@ mainMenuContacts: 📱 Aloqa ma'lumotlari
 mainMenuCart: 🛒 Savatcha
 mainMenuLocations: 🗺️ Qayerda sotib olish
 mainMenuBack: ⬅️ Asosiy lavhaga
+mainMenuSettings: ⚙️ Sozlamalar
 
 mainErrorMessage: ⁉️ Kechirasiz jarayonda hato yuz berdi
 
@@ -47,6 +48,53 @@ CategoriesMenuBack: ⬅️ Kategoriyalarga qaytish
 CategoriesMenuEmpty: ❌ Kechirasiz, hozircha kategoriyalar bo'sh.
 #=================================================CategoriesMenu
 
-#=================================================SubCategoriesMenu
-SubCategoriesMenuEmpty: ❌ Kechirasiz, hozircha kategoriya bo'sh.
-#=================================================SubCategoriesMenu
+
+#=================================================ProductsMenu
+ProductsAddToCart: ➕ Iltimos savatga solmoqchi bo'lgan miqdorni kiriting.
+ProductsAddToCartErrMessage: ➕ Iltimos savatga solmoqchi bo'lgan miqdorni faqat raqam bilan kiriting.
+ProductsMenuEmpty: ❌ Kechirasiz, hozircha kategoriyalar bo'sh.
+ProductsAddedToCartSucces: Tovar savatga qo'shildi.
+ProductsInCartExists: Bu tovar savatingizda mavjud.
+#=================================================ProductsMenu
+
+
+#=================================================CartMenu
+CartMenuEmpty: 🕳️ Sizning savatingiz hozircha bo'sh.
+CartMenuSee: 📑 Savatni ko'rish
+CartMenuClear: 🗑️ Savatni bo'shatish
+CartMenuClearSuccess: Savatingiz bo'shatildi.
+CartMenuBack: ⬅️ Ortga
+CartMenuItems: 🛒 Savatcha
+CartMenuList: 📝 Ro'yhatni ko'rish
+CartMenuMakeOrder: ➡️ Buyurtma qilish
+#=================================================CartMenu
+
+#=================================================OrderMenu
+
+OrderMenuBack: ⬅️ Ortga
+OrderMenuContinue: ➡️ Davom etish
+OrderMenuTrue: ✔️ Tasdiqlash
+CartMenuEnterFIO: Iltimos o'zingizning Familiya, Ism va Sharifingizni (FISH) kiriting.
+CartMenuEnterGEO: Iltimos yetkazib berish manzilini kiriting yoki manzil ulashing.
+CartMenuEnterDATE: Iltimos yetkazib berish sanasini kiriting (kun/oy/yil).
+CartMenuEnterPayType: Iltimos to'lov turinini tanlang.
+CartMenuConfirm: Iltimos ma'lumotlar to'g'riligini tasdiqlang.
+CartMenuOrderPending: Rahmat, buyurtmangiz ko'rikni kutyapti. Tez orada siz bilan hodimimiz aloqaga chiqadi.
+CartMenuOrderPayCash: 💵 Naqd
+CartMenuOrderPayCard: 💳 Elektron/Onlayn
+#=================================================OrderMenu
+
+
+#=================================================MyOrdersMenu
+ListMyOrders: 📑 Buyurtmalarni ko'rish
+ListMyCompleteOrders: 📑 Muvaffaqiyatli buyurtmalarni ko'rish
+ListMyOrdersEmpt: ❌ Kechirasiz, hozircha buyurtmalaringiz yo'q.
+#=================================================MyOrdersMenu
+
+#=================================================SettingsMenu
+SettingsMenuChangePhone: 📲 Raqamni o'zgartirish
+SettingsMenuChangeLanguage: 🌍 Tilni o'zgartirish
+SettingsMenuBack: ⬅️ Ortga
+SettingsMenuChangePhoneMsg: 📲 Iltimos o'z raqamingizni kiriting (+998901234567).
+SettingsMenuChangePhoneSuccess: Raqamingizni muvaffaqiyatli o'zgartirildi.
+#=================================================SettingsMenu

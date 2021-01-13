@@ -1,3 +1,4 @@
+const {Sequelize} = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('transactions', {
         id: {
@@ -24,12 +25,15 @@ module.exports = function (sequelize, DataTypes) {
         status: {
             type: DataTypes.FLOAT
         },
-
-
-
+        'created_at': {
+            type: 'DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)'
+        },
+        'updated_at': {
+            type: 'DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'
+        }
     }, {
         sequelize,
-        timestamps: true,
+        timestamps: false,
         freezeTableName: true,
         indexes: [
             {

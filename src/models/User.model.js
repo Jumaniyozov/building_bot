@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('users', {
         id: {
@@ -30,10 +32,16 @@ module.exports = function (sequelize, DataTypes) {
         phone: {
             type: DataTypes.STRING(50),
             allowNull: false,
+        },
+        'created_at': {
+            type: 'DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)'
+        },
+        'updated_at': {
+            type: 'DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'
         }
     }, {
         sequelize,
-        timestamps: true,
+        timestamps: false,
         freezeTableName: true,
         indexes: [
             {
@@ -41,7 +49,7 @@ module.exports = function (sequelize, DataTypes) {
                 unique: true,
                 using: "BTREE",
                 fields: [
-                    { name: "id" },
+                    {name: "id"},
                 ]
             },
             {
@@ -49,7 +57,7 @@ module.exports = function (sequelize, DataTypes) {
                 unique: true,
                 using: "BTREE",
                 fields: [
-                    { name: "userId" },
+                    {name: "userId"},
                 ]
             }
         ]

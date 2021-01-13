@@ -92,25 +92,17 @@ const sendCategories = async (ctx, bot) => {
                     markupReply = menu3;
                 }
             }
-            //
-            // markupReply = [
-            //
-            //     ...categoryMarkup,
-            //     currentCategoryLocationIndex === 0
-            //         ? [{text: '▶️', callback_data: 'Next'}]
-            //         : currentCategoryLocationIndex + 1 < categoryLength
-            //         ? [{text: '◀️', callback_data: 'Previous'}, {text: '▶️', callback_data: 'Next'}]
-            //         : [{text: '◀️', callback_data: 'Previous'}],
-            //     [{
-            //         text: `${ctx.i18n.t('CategoriesMenuBack')}`,
-            //         callback_data: `mainMenuBack`
-            //     }]
-            // ]
+
+            let message = ctx.i18n.t('mainMenuCategories');
+
+            if (ctx.scene.state.start) {
+                message = ctx.scene.state.start
+            }
 
             if (!_.isEmpty(categoryMarkup)) {
                 const msg = await bot.telegram.sendMessage(
                     ctx.chat.id,
-                    `${ctx.i18n.t('mainMenuCategories')}`,
+                    message,
                     {
                         parse_mode: "HTML",
                         reply_markup: {

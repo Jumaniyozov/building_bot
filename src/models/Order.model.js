@@ -1,3 +1,4 @@
+const {Sequelize} = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('orders', {
         id: {
@@ -34,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         receiveDate: {
-            type: DataTypes.DATE,
+            type: DataTypes.STRING(100),
             allowNull: true
         },
         paymentType: {
@@ -45,9 +46,15 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(100),
             allowNull: false
         },
+        'created_at': {
+            type: 'DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)'
+        },
+        'updated_at': {
+            type: 'DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'
+        }
     }, {
         sequelize,
-        timestamps: true,
+        timestamps: false,
         freezeTableName: true,
         indexes: [
             {

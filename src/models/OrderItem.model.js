@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         orderId: {
             type: DataTypes.INTEGER,
-            llowNull: false,
+            allowNull: false,
             references: {
                 model: {
                     model: 'orders',
