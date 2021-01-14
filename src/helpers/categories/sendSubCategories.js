@@ -38,14 +38,20 @@ const sendSubCategories = async (ctx, bot, parentId) => {
                 }]
             })
 
-            const backMenu = [[{
-                text: `${ctx.i18n.t('CategoriesMenuBack')}`,
-                callback_data: `categoriesMenuBack`
-            }],
+            const backMenu = [
+                [{
+                    text: `${ctx.i18n.t('mainMenuCart')}`,
+                    callback_data: `goToCart`
+                }],
+                [{
+                    text: `${ctx.i18n.t('CategoriesMenuBack')}`,
+                    callback_data: `categoriesMenuBack`
+                }],
                 [{
                     text: `${ctx.i18n.t('mainMenuBack')}`,
                     callback_data: `mainMenuBack`
-                }]];
+                }]
+            ];
 
             const nextMenu = [{text: '▶️', callback_data: 'Next'}];
 
@@ -77,14 +83,14 @@ const sendSubCategories = async (ctx, bot, parentId) => {
 
             let markupReply = [];
 
-            if( curtSubCatLocId === 0) {
-                if(curtSubCatLocId + 1 < categoryLength){
+            if (curtSubCatLocId === 0) {
+                if (curtSubCatLocId + 1 < categoryLength) {
                     markupReply = menu1;
                 } else {
                     markupReply = menu4;
                 }
             } else {
-                if(curtSubCatLocId + 1 < categoryLength) {
+                if (curtSubCatLocId + 1 < categoryLength) {
                     markupReply = menu2;
                 } else {
                     markupReply = menu3;

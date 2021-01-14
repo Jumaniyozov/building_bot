@@ -97,4 +97,10 @@ SettingsMenuChangeLanguage: 🌍 Tilni o'zgartirish
 SettingsMenuBack: ⬅️ Ortga
 SettingsMenuChangePhoneMsg: 📲 Iltimos o'z raqamingizni kiriting (+998901234567).
 SettingsMenuChangePhoneSuccess: Raqamingizni muvaffaqiyatli o'zgartirildi.
+SettingsMenuChangeLanguageSuccess: Til muvaffaqiyatli o'zgartirildi.
 #=================================================SettingsMenu
+
+#=================================================ActionsMenu
+
+ActionsMenuEmpty: ❌ Kechirasiz, hozircha aksiyalar mavjud emas.
+#=================================================ActionsMenu

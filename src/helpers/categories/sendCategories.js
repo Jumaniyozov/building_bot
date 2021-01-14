@@ -3,7 +3,6 @@ const _ = require('lodash');
 const cleanMessages = require('../cleaner');
 
 
-
 const sendCategories = async (ctx, bot) => {
 
     await bot.telegram.sendChatAction(ctx.chat.id, 'find_location');
@@ -16,7 +15,6 @@ const sendCategories = async (ctx, bot) => {
         const listLength = 10;
 
         const categories = await getCategories();
-
 
 
         if (_.isEmpty(categories)) {
@@ -44,10 +42,16 @@ const sendCategories = async (ctx, bot) => {
                 }]
             })
 
-            const backMenu =  [{
-                text: `${ctx.i18n.t('CategoriesMenuBack')}`,
-                callback_data: `mainMenuBack`
-            }];
+            const backMenu = [
+                [{
+                    text: `${ctx.i18n.t('mainMenuCart')}`,
+                    callback_data: `goToCart`
+                }],
+                [{
+                    text: `${ctx.i18n.t('CategoriesMenuBack')}`,
+                    callback_data: `mainMenuBack`
+                }],
+            ];
 
             const nextMenu = [{text: '▶️', callback_data: 'Next'}];
 
@@ -57,36 +61,36 @@ const sendCategories = async (ctx, bot) => {
             const menu1 = [
                 ...categoryMarkup,
                 nextMenu,
-                backMenu
+                ...backMenu
             ]
 
             const menu2 = [
                 ...categoryMarkup,
                 nextAndPreviousMenu,
-                backMenu
+                ...backMenu
             ]
 
             const menu3 = [
                 ...categoryMarkup,
                 previousMenu,
-                backMenu
+                ...backMenu
             ]
 
             const menu4 = [
                 ...categoryMarkup,
-                backMenu
+                ...backMenu
             ]
 
             let markupReply = [];
 
-            if( currentCategoryLocationIndex === 0) {
-                if(currentCategoryLocationIndex + 1 < categoryLength){
+            if (currentCategoryLocationIndex === 0) {
+                if (currentCategoryLocationIndex + 1 < categoryLength) {
                     markupReply = menu1;
                 } else {
                     markupReply = menu4;
                 }
             } else {
-                if(currentCategoryLocationIndex + 1 < categoryLength) {
+                if (currentCategoryLocationIndex + 1 < categoryLength) {
                     markupReply = menu2;
                 } else {
                     markupReply = menu3;

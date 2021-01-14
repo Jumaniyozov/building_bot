@@ -51,6 +51,7 @@ const myOrdersEnterScene = require('./src/scenes/myOrder.scene').myOrdersEnterSc
 const myOrdersPendingScene = require('./src/scenes/myOrder.scene').myOrdersPendingScene(bot, I18n);
 const settingEnterScene = require('./src/scenes/setings.scene').settingsEnterScene(bot, I18n);
 const settingsChangePhoneScene = require('./src/scenes/setings.scene').settingsChangePhoneScene(bot, I18n);
+const actionsScene = require('./src/scenes/actions.scene').actionsScene(bot, I18n);
 
 const mainScene = require('./src/scenes/main.scene')(bot, I18n);
 const locationsScene = require('./src/scenes/locations.scene')(bot, I18n);
@@ -62,7 +63,7 @@ const stgs = [
     productsScene, productAddToCartScene, cartEnterScene, orderEnterScene, orderEnterFIOScene,
     orderEnterFIOScene, orderEnterGEOScene, orderEnterDATEScene, orderEnterPayTypeScene,
     orderEnterConfirmationScene, cartMenuEnterScene, myOrdersEnterScene,
-    myOrdersPendingScene, settingEnterScene, settingsChangePhoneScene
+    myOrdersPendingScene, settingEnterScene, settingsChangePhoneScene, actionsScene
 ];
 
 // Stage
@@ -99,7 +100,7 @@ stage.command('/start', async ctx => {
 })
 
 
-bot.use(stage.middleware());
+bot.use(stage.middleware()).catch(error => console.error(error.message));
 
 // bot.use(ctx => console.log(ctx.update.channel_post.sender_chat.id));
 

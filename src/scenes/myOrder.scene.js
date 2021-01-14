@@ -62,11 +62,6 @@ module.exports.myOrdersPendingScene = (bot, I18n) => {
         await sendMyOrders(ctx, bot, 'Ожидает');
     });
 
-// listener
-    myOrdersPendingScene.hears(I18n.match("ListMyOrders"), async (ctx) => {
-
-    });
-
 
     myOrdersPendingScene.action('Next', async (ctx) => {
         await cleanMessages(ctx);

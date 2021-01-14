@@ -14,6 +14,7 @@ const sendCart = require('./cart/sendCart');
 const getCartList = require('./cart/getCartList');
 const getMyOrders = require('./orders/getMyOrders');
 const sendMyOrders = require('./orders/sendMyOrders');
+const sendActions = require('./actions/actions');
 
 module.exports = {
     sendLocations,
@@ -31,5 +32,6 @@ module.exports = {
     sendCart,
     getCartList,
     getMyOrders,
-    sendMyOrders
+    sendMyOrders,
+    sendActions
 }

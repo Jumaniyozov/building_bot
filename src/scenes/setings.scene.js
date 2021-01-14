@@ -40,12 +40,13 @@ module.exports.settingsEnterScene = (bot, I18n) => {
     })
 
     settingsEnterScene.hears(I18n.match('SettingsMenuChangePhone'), ctx => {
-        return ctx.scene.enter('settingsChangePhone');
 
+        return ctx.scene.enter('settingsChangePhone');
     })
 
     settingsEnterScene.hears(I18n.match('SettingsMenuChangeLanguage'), ctx => {
-        return ctx.scene.enter('settingsChangeLanguage')
+        ctx.session.changingLanguage = {item: 'not empty'};
+        return ctx.scene.enter('language')
     })
 
     return settingsEnterScene;

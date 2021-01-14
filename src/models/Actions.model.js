@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('products', {
+    return sequelize.define('actions', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -17,28 +17,28 @@ module.exports = function (sequelize, DataTypes) {
         },
         description_uz: {
             type: DataTypes.TEXT,
-            allowNull: true
+            allowNull: false
         },
         description_ru: {
             type: DataTypes.TEXT,
-            allowNull: true
-        },
-        price: {
-            type: DataTypes.FLOAT,
             allowNull: false
         },
-        quantity: {
-            type: DataTypes.INTEGER,
+        active_from: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        active_to: {
+            type: DataTypes.DATE,
             allowNull: false
         },
         photoUrl: {
             type: DataTypes.STRING(255),
-            allowNull: true
+            allowNull: false
         },
-
-        discount: {
-            type: DataTypes.FLOAT,
-            allowNull: true
+        status: {
+            type: DataTypes.STRING(255),
+            allowNull: false,
+            defaultValue: 'Активен'
         },
         'created_at': {
             type: 'DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)'

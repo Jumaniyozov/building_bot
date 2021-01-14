@@ -10,7 +10,8 @@ const {
     Product,
     ProductCategory,
     Transaction,
-    User
+    User,
+    Actions
 } = initModels(sequelize);
 
 module.exports = {
@@ -22,5 +23,6 @@ module.exports = {
     Product,
     ProductCategory,
     Transaction,
-    User
+    User,
+    Actions
 }

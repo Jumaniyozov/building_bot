@@ -66,11 +66,16 @@ module.exports.categoriesEnterScene = (bot, I18n) => {
         await sendCategories(ctx, bot);
     });
 
+
     categoriesEnter.action('Previous', async (ctx) => {
         await ctx.answerCbQuery();
         await cleanMessages(ctx);
         ctx.session.currentCategoryLocationIndex -= 1;
         await sendCategories(ctx, bot);
+    });
+
+    categoriesEnter.action('goToCart', async (ctx) => {
+        ctx.scene.enter('cartMenuEnter');
     });
 
     categoriesEnter.action('mainMenuBack', async (ctx) => {
@@ -113,6 +118,9 @@ module.exports.subCategoriesEnterScene = (bot, I18n) => {
         await sendSubCategories(ctx, bot, ctx.session.subCategoryParentId);
     });
 
+    subCategoriesEnterScene.action('goToCart', async (ctx) => {
+        ctx.scene.enter('cartMenuEnter');
+    });
 
     subCategoriesEnterScene.action('mainMenuBack', async (ctx) => {
         await ctx.answerCbQuery();

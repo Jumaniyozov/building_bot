@@ -8,6 +8,7 @@ const _product = require("./Product.model");
 const _product_category = require("./ProductCategory.model");
 const _transaction = require("./Transaction.model");
 const _user = require("./User.model");
+const _actions = require("./Actions.model");
 
 
 function initModels(sequelize) {
@@ -20,6 +21,7 @@ function initModels(sequelize) {
     const order = _order(sequelize, DataTypes);
     const order_item = _order_item(sequelize, DataTypes);
     const transaction = _transaction(sequelize, DataTypes);
+    const actions  = _actions(sequelize, DataTypes);
 
     category.belongsToMany(product, {through: product_category, foreignKey: "categoryId", otherKey: "productId"});
     product.belongsToMany(category, {through: product_category, foreignKey: "productId", otherKey: "categoryId"});
@@ -45,6 +47,7 @@ function initModels(sequelize) {
     user.hasMany(transaction, {foreignKey: "userId"});
 
     // sequelize.sync({ force: true});
+    // actions.sync({force: true});
 
     return {
         User: user,
@@ -55,7 +58,8 @@ function initModels(sequelize) {
         ProductCategory: product_category,
         Order: order,
         OrderItem: order_item,
-        Transaction: transaction
+        Transaction: transaction,
+        Actions: actions
     };
 }
 
