@@ -15,6 +15,13 @@ const getCartList = require('./cart/getCartList');
 const getMyOrders = require('./orders/getMyOrders');
 const sendMyOrders = require('./orders/sendMyOrders');
 const sendActions = require('./actions/actions');
+const sendSearchResults = require('./search/sendSearchResults');
+const getUserRegistered = require('./users/getUserRegistered');
+const inlineQueryHandler = require('./queryHandler');
+const groupStatusHandler = require('./groupStatusHandler');
+const qaHandler = require('./qaHandler');
+const calendar = require('./calendar');
+
 
 module.exports = {
     sendLocations,
@@ -33,5 +40,11 @@ module.exports = {
     getCartList,
     getMyOrders,
     sendMyOrders,
-    sendActions
+    sendActions,
+    sendSearchResults,
+    getUserRegistered,
+    inlineQueryHandler,
+    groupStatusHandler,
+    qaHandler,
+    calendar
 }

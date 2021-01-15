@@ -8,32 +8,6 @@ module.exports = (bot, I18n) => {
 
     locationsScene.enter(async (ctx) => {
         await cleanMessages(ctx);
-        ctx.session.message_filter.push((await ctx.message).message_id);
-
-        let message = ctx.i18n.t("mainMenuLocations");
-
-        ctx.session.locationsMenuMarkup = [
-            [`${ctx.i18n.t("LocationsMenuBuy")}`],
-            [`${ctx.i18n.t("mainMenuBack")}`],
-        ];
-
-        ctx.session.currentLocationIndex = 0;
-
-        const msg = bot.telegram.sendMessage(ctx.chat.id, message, {
-            parse_mode: "HTML",
-            reply_markup: {
-                keyboard: ctx.session.locationsMenuMarkup,
-                resize_keyboard: true
-            },
-        });
-
-        ctx.session.message_filter.push((await msg).message_id);
-    });
-
-    locationsScene.hears(I18n.match("LocationsMenuBuy"), async (ctx) => {
-        await cleanMessages(ctx);
-        ctx.session.message_filter.push((await ctx.message).message_id);
-
 
         await sendLocations(ctx, bot);
     });
@@ -44,6 +18,22 @@ module.exports = (bot, I18n) => {
         await sendLocations(ctx, bot);
     });
 
+
+    locationsScene.action(/gtd:/, async (ctx) => {
+        await ctx.answerCbQuery();
+
+        let lan = ctx.session.registered.language
+
+        const msg =  ctx.reply(`
+${lan === 'ru' ? 'Имя' : 'Nomi'}: ${ctx.session.currentLocation[`name_${lan}`]}
+${lan === 'ru' ? 'Адресс' : 'Manzil'}: ${ctx.session.currentLocation[`description_${lan}`]}
+`)
+
+
+        ctx.session.message_filter.push((await msg).message_id);
+    });
+
+
     locationsScene.action('Previous', async (ctx) => {
         await cleanMessages(ctx);
         ctx.session.currentLocationIndex -= 1;
@@ -52,12 +42,6 @@ module.exports = (bot, I18n) => {
 
     locationsScene.action('mainMenuBack', async (ctx) => {
         await ctx.answerCbQuery();
-        return ctx.scene.enter("mainMenu", {
-            start: ctx.i18n.t("mainMenu"),
-        });
-    });
-
-    locationsScene.hears(I18n.match("mainMenuBack"), (ctx) => {
         return ctx.scene.enter("mainMenu", {
             start: ctx.i18n.t("mainMenu"),
         });

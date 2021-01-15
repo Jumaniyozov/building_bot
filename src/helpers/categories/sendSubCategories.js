@@ -43,14 +43,7 @@ const sendSubCategories = async (ctx, bot, parentId) => {
                     text: `${ctx.i18n.t('mainMenuCart')}`,
                     callback_data: `goToCart`
                 }],
-                [{
-                    text: `${ctx.i18n.t('CategoriesMenuBack')}`,
-                    callback_data: `categoriesMenuBack`
-                }],
-                [{
-                    text: `${ctx.i18n.t('mainMenuBack')}`,
-                    callback_data: `mainMenuBack`
-                }]
+
             ];
 
             const nextMenu = [{text: '▶️', callback_data: 'Next'}];
@@ -97,10 +90,16 @@ const sendSubCategories = async (ctx, bot, parentId) => {
                 }
             }
 
+            let message = `${ctx.i18n.t('mainMenuCategories')}`
+
+            if (ctx.scene.state.start) {
+                message = ctx.scene.state.start
+            }
+
             if (!_.isEmpty(categoryMarkup)) {
                 const msg = await bot.telegram.sendMessage(
                     ctx.chat.id,
-                    `${ctx.i18n.t('mainMenuCategories')}`,
+                    message,
                     {
                         parse_mode: "HTML",
                         reply_markup: {

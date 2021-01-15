@@ -11,6 +11,7 @@ mainMenuCart: 🛒 Savatcha
 mainMenuLocations: 🗺️ Qayerda sotib olish
 mainMenuBack: ⬅️ Asosiy lavhaga
 mainMenuSettings: ⚙️ Sozlamalar
+mainMenuQA: ❓ Savol Berish
 
 mainErrorMessage: ⁉️ Kechirasiz jarayonda hato yuz berdi
 
@@ -24,6 +25,7 @@ contactsMenuSocialsEmpty: ❌ Kechirasiz hozircha ma'lumotlar yo'q
 
 #=================================================LocationsMenu
 LocationsMenuBuy: 📍 Qayerda Sotib Olish
+LocationsMenuData: 📍 Ko'proq ma'lumot olish
 #=================================================LocationsMenu
 
 #=================================================LanguageMenu
@@ -65,6 +67,7 @@ CartMenuClear: 🗑️ Savatni bo'shatish
 CartMenuClearSuccess: Savatingiz bo'shatildi.
 CartMenuBack: ⬅️ Ortga
 CartMenuItems: 🛒 Savatcha
+CartMenuAdd: 🛒 Savatga qo'shish
 CartMenuList: 📝 Ro'yhatni ko'rish
 CartMenuMakeOrder: ➡️ Buyurtma qilish
 #=================================================CartMenu
@@ -74,9 +77,15 @@ CartMenuMakeOrder: ➡️ Buyurtma qilish
 OrderMenuBack: ⬅️ Ortga
 OrderMenuContinue: ➡️ Davom etish
 OrderMenuTrue: ✔️ Tasdiqlash
+OrderAcceptedSuccess: Sizning buyurtmangiz qabul qilindi.
+OrderAcceptedCancel: Kechirasiz sizning buyurtmangiz rad qilindi.
 CartMenuEnterFIO: Iltimos o'zingizning Familiya, Ism va Sharifingizni (FISH) kiriting.
 CartMenuEnterGEO: Iltimos yetkazib berish manzilini kiriting yoki manzil ulashing.
+CartMenuEnterGEOShare: 🗺️ Manzil ulashish.
 CartMenuEnterDATE: Iltimos yetkazib berish sanasini kiriting (kun/oy/yil).
+CartMenuEnterStartDate: Iltimos boshlang'ich sanani kiriting
+CartMenuEnterDateMsg: Sanani tanlash uchun kun ustiga bosing.
+CartMenuEnterEndDate: Iltimos yakuniy sanani kiriting
 CartMenuEnterPayType: Iltimos to'lov turinini tanlang.
 CartMenuConfirm: Iltimos ma'lumotlar to'g'riligini tasdiqlang.
 CartMenuOrderPending: Rahmat, buyurtmangiz ko'rikni kutyapti. Tez orada siz bilan hodimimiz aloqaga chiqadi.
@@ -104,3 +113,19 @@ SettingsMenuChangeLanguageSuccess: Til muvaffaqiyatli o'zgartirildi.
 
 ActionsMenuEmpty: ❌ Kechirasiz, hozircha aksiyalar mavjud emas.
 #=================================================ActionsMenu
+
+#=================================================SearchMenu
+SearchMenuMsg: Iltimos qidiruvni boshlash uchun tugmani bosing.
+#=================================================SearchMenu
+
+#=================================================AskMenu
+askQuestionConfirm: 🖅 Ha
+askQuestionAnswer: Javob berish?
+askQuestionSent: Savolingiz mutaxassislarga yuborildi
+askQuestionCall: Javob kutmoqda
+askQuestionDone: Javob berdi
+askQuestionUserMessage: Salom, savolingizga javob
+askQuestionExpl: Iltimos sizni qiziqtirayotgan savolni yuboring
+askQuestionMail: Ushbu savolni yuborishni istaysizmi?
+
+#=================================================AskMenu

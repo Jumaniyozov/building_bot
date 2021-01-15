@@ -11,7 +11,8 @@ const {
     ProductCategory,
     Transaction,
     User,
-    Actions
+    Actions,
+    Questions
 } = initModels(sequelize);
 
 module.exports = {
@@ -24,5 +25,6 @@ module.exports = {
     ProductCategory,
     Transaction,
     User,
-    Actions
+    Actions,
+    Questions
 }

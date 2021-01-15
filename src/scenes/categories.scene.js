@@ -3,52 +3,6 @@ const {getProducts} = require("../helpers");
 const {cleanMessages, sendCategories, sendSubCategories} = require("../helpers");
 
 
-module.exports.categoriesScene = (bot, I18n) => {
-    const categoriesScene = new Scene("categories");
-
-    categoriesScene.enter(async (ctx) => {
-        await cleanMessages(ctx);
-        // ctx.session.message_filter.push((await ctx.message).message_id);
-
-
-        let message = ctx.i18n.t("mainMenuCategories");
-
-        ctx.session.categoriesMenuMarkup = [
-            [`${ctx.i18n.t("CategoriesMenuLook")}`],
-            [`${ctx.i18n.t("mainMenuBack")}`],
-        ];
-
-
-        ctx.session.currentCategoryLocationIndex = 0;
-          //currentSubCategoryLocationIndex
-
-        const msg = bot.telegram.sendMessage(ctx.chat.id, message, {
-            parse_mode: "HTML",
-            reply_markup: {
-                keyboard: ctx.session.categoriesMenuMarkup,
-                resize_keyboard: true
-            },
-        });
-
-        ctx.session.message_filter.push((await msg).message_id);
-    });
-
-
-    // listener
-    categoriesScene.hears(I18n.match("CategoriesMenuLook"), async (ctx) => {
-        return  ctx.scene.enter('categoriesEnter');
-    });
-
-    categoriesScene.hears(I18n.match("mainMenuBack"), async (ctx) => {
-        return ctx.scene.enter("mainMenu", {
-            start: ctx.i18n.t("mainMenu"),
-        });
-    });
-
-    return categoriesScene;
-}
-
-
 module.exports.categoriesEnterScene = (bot, I18n) => {
     const categoriesEnter = new Scene("categoriesEnter");
 
@@ -74,13 +28,15 @@ module.exports.categoriesEnterScene = (bot, I18n) => {
         await sendCategories(ctx, bot);
     });
 
-    categoriesEnter.action('goToCart', async (ctx) => {
-        ctx.scene.enter('cartMenuEnter');
-    });
-
     categoriesEnter.action('mainMenuBack', async (ctx) => {
         await ctx.answerCbQuery();
-        return ctx.scene.enter("categories");
+        return ctx.scene.enter("mainMenu", {
+            start: ctx.i18n.t("mainMenu"),
+        });
+    });
+
+    categoriesEnter.action('goToCart', async (ctx) => {
+        ctx.scene.enter('cartEnter');
     });
 
     categoriesEnter.action(/^gts:/, async (ctx) => {
@@ -119,7 +75,7 @@ module.exports.subCategoriesEnterScene = (bot, I18n) => {
     });
 
     subCategoriesEnterScene.action('goToCart', async (ctx) => {
-        ctx.scene.enter('cartMenuEnter');
+        ctx.scene.enter('cartEnter');
     });
 
     subCategoriesEnterScene.action('mainMenuBack', async (ctx) => {
@@ -142,11 +98,8 @@ module.exports.subCategoriesEnterScene = (bot, I18n) => {
         ctx.session.categoryId = ctx.update.callback_query.data.split(':')[1];
 
 
-        ctx.scene.enter('products');
+        return ctx.scene.enter('products');
 
-
-
-        // await sendSubCategories(ctx, bot, parentId);
     });
 
 

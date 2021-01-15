@@ -15,7 +15,7 @@ const sendCart = async (ctx, bot) => {
 
     try {
 
-        const listLength = 10;
+        const listLength = 5;
         const cartList = _.values(cart);
 
         const cartItemsLength = cartList.length / listLength;
@@ -28,29 +28,54 @@ const sendCart = async (ctx, bot) => {
 
         if (cartItemsLength === cartItemIndex) {
             ctx.session.cartItemIndex -= 1;
-            return ctx.scene.enter('cartMenuEnter');
+            return ctx.scene.enter('cartEnter');
         }
+        let lan = ctx.session.registered.language;
+
+        let message = lan === 'ru' ? `🧮 <b>Ваша корзина: </b>\n` : `🧮 <b>Sizning savatingiz</b>\n`;
+        let total = 0;
 
         const categoryMarkup = list.map(el => {
+
+            message += `
+🛍️ ${el[`name_${lan}`]} 
+🏷️ ${el.price} ${el.discount === 0 ? '' : `(${el.discount}%)`} x ${el.quantity} = ${((el.price - (el.price * (el.discount / 100))) * el.quantity)} ${lan === 'ru' ? 'сум' : `'so'm`}
+`;
+
+            if(el.discount !== null) {
+              total +=  ((el.price - (el.price * (el.discount / 100))) * el.quantity)
+            } else {
+                total += el.price*el.quantity
+            }
+
             return [
-                {
-                    text: `➖`,
-                    callback_data: `cmi:${el.id}:${el.quantity}`
-                },
-                {
-                    text: `${el[`name_${ctx.session.registered.language}`]}`,
-                    callback_data: `cid:${el.id}`
-                },
-                {
-                    text: `➕`,
-                    callback_data: `cai:${el.id}:${el.quantity}`
-                },
-                {
-                    text: `❌`,
-                    callback_data: `cri:${el.id}`
-                }
+                [
+                    {
+                        text: `${el[`name_${lan}`]} ${el.quantity} ${lan === 'ru' ? 'шт.' :  'ta'}`,
+                        callback_data: `cid:${el.id}`
+                    }
+                ],
+                [
+                    {
+                        text: `➖`,
+                        callback_data: `cmi:${el.id}:${el.quantity}`
+                    },
+                    {
+                        text: `❌`,
+                        callback_data: `cri:${el.id}`
+                    },
+                    {
+                        text: `➕`,
+                        callback_data: `cai:${el.id}:${el.quantity}`
+                    }
+                ]
             ]
         })
+
+        message += `
+
+<b>💷 ${lan === 'ru' ? `В итоге: ${total} сум` : `Umumiy: ${total} so'm`} </b>
+`
 
         const backMenu = [
             [
@@ -64,15 +89,7 @@ const sendCart = async (ctx, bot) => {
                     text: `${ctx.i18n.t('CartMenuList')}`,
                     callback_data: `showList`
                 }
-            ],
-            [{
-                text: `${ctx.i18n.t('CartMenuBack')}`,
-                callback_data: `cartMenuBack`
-            }],
-            [{
-                text: `${ctx.i18n.t('mainMenuBack')}`,
-                callback_data: `mainMenuBack`
-            }]
+            ]
         ];
 
         const nextMenu = [{text: '▶️', callback_data: 'Next'}];
@@ -81,25 +98,25 @@ const sendCart = async (ctx, bot) => {
         const previousMenu = [{text: '◀️', callback_data: 'Previous'}]
 
         const menu1 = [
-            ...categoryMarkup,
+            ...categoryMarkup.flat(1),
             nextMenu,
             ...backMenu
         ]
 
         const menu2 = [
-            ...categoryMarkup,
+            ...categoryMarkup.flat(1),
             nextAndPreviousMenu,
             ...backMenu
         ]
 
         const menu3 = [
-            ...categoryMarkup,
+            ...categoryMarkup.flat(1),
             previousMenu,
             ...backMenu
         ]
 
         const menu4 = [
-            ...categoryMarkup,
+            ...categoryMarkup.flat(1),
             ...backMenu
         ]
 
@@ -119,11 +136,33 @@ const sendCart = async (ctx, bot) => {
             }
         }
 
-        let message = ctx.i18n.t('CartMenuItems');
 
         if (ctx.scene.state.start) {
             message = ctx.scene.state.start
         }
+
+
+
+        let messaget = ctx.i18n.t('mainMenuCart');
+
+        const authMsg = [
+            [`${ctx.i18n.t('CartMenuClear')}`],
+            [`${ctx.i18n.t('mainMenuBack')}`],
+        ]
+
+        if (ctx.scene.state.start) {
+            messaget = ctx.scene.state.start
+        }
+
+        const msge = await bot.telegram.sendMessage(ctx.chat.id, messaget, {
+            parse_mode: 'HTML',
+            reply_markup: {
+                keyboard: authMsg,
+                resize_keyboard: true
+            }
+        })
+
+        ctx.session.message_filter.push((await msge).message_id);
 
 
         const msg = await bot.telegram.sendMessage(
@@ -140,6 +179,7 @@ const sendCart = async (ctx, bot) => {
             }
         );
         ctx.session.message_filter.push((await msg).message_id);
+
     } catch (error) {
         console.error(error);
         return ctx.scene.enter('mainMenu', {

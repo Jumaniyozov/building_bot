@@ -5,7 +5,7 @@ class MySQL {
 		this.connection = new Sequelize(basename, login, password, {
 			host   : host,
 			dialect: 'mysql',
-			// logging: false
+			logging: false
 		});
 	}
 }

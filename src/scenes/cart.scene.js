@@ -20,27 +20,7 @@ module.exports.cartEnterScene = (bot, I18n) => {
 
         ctx.session.cartItemIndex = 0;
 
-        let message = ctx.i18n.t('mainMenuCart');
-
-        const authMsg = [
-            [`${ctx.i18n.t('CartMenuSee')}`],
-            [`${ctx.i18n.t('CartMenuClear')}`],
-            [`${ctx.i18n.t('mainMenuBack')}`],
-        ]
-
-        if (ctx.scene.state.start) {
-            message = ctx.scene.state.start
-        }
-
-        const msg = bot.telegram.sendMessage(ctx.chat.id, message, {
-            parse_mode: 'HTML',
-            reply_markup: {
-                keyboard: authMsg,
-                resize_keyboard: true
-            }
-        })
-
-        ctx.session.message_filter.push((await msg).message_id);
+        await sendCart(ctx, bot);
     })
 
 
@@ -55,60 +35,34 @@ module.exports.cartEnterScene = (bot, I18n) => {
         })
     })
 
-
-    cartEnterScene.hears(I18n.match('CartMenuSee'), async ctx => {
-        ctx.scene.enter('cartMenuEnter');
-    })
-
-
     cartEnterScene.hears(I18n.match('mainMenuBack'), ctx => {
         return ctx.scene.enter('mainMenu', {
             start: ctx.i18n.t('mainMenu')
         })
     })
 
-    return cartEnterScene;
-}
 
+    cartEnterScene.action('makeOrder', async ctx => {
 
-module.exports.cartMenuEnterScene = (bot, I18n) => {
-    const cartMenuEnterScene = new Scene('cartMenuEnter');
-
-
-    cartMenuEnterScene.enter(async (ctx) => {
-        await cleanMessages(ctx);
-        await sendCart(ctx, bot);
+        return ctx.scene.enter('orderEnterFIO');
     })
 
 
-
-    cartMenuEnterScene.action('CartMenuSee', async ctx => {
-        await cleanMessages(ctx);
-        await sendCart(ctx, bot);
-    })
-
-
-    cartMenuEnterScene.action('makeOrder', async ctx => {
-        // await cleanMessages(ctx);
-        return ctx.scene.enter('orderEnter');
-    })
-
-
-    cartMenuEnterScene.action('Next', async (ctx) => {
+    cartEnterScene.action('Next', async (ctx) => {
         await ctx.answerCbQuery();
         await cleanMessages(ctx);
         ctx.session.cartItemIndex += 1;
         await sendCart(ctx, bot);
     });
 
-    cartMenuEnterScene.action('Previous', async (ctx) => {
+    cartEnterScene.action('Previous', async (ctx) => {
         await ctx.answerCbQuery();
         await cleanMessages(ctx);
         ctx.session.cartItemIndex -= 1;
         await sendCart(ctx, bot);
     });
 
-    cartMenuEnterScene.action('showList', async (ctx) => {
+    cartEnterScene.action('showList', async (ctx) => {
         await ctx.answerCbQuery();
         await cleanMessages(ctx);
 
@@ -124,7 +78,7 @@ module.exports.cartMenuEnterScene = (bot, I18n) => {
                     inline_keyboard: [
                         [{
                             text: `${ctx.i18n.t('CartMenuBack')}`,
-                            callback_data: `CartMenuSee`
+                            callback_data: `cartMenuBack`
                         }],
                         [{
                             text: `${ctx.i18n.t('mainMenuBack')}`,
@@ -140,7 +94,7 @@ module.exports.cartMenuEnterScene = (bot, I18n) => {
         ctx.session.message_filter.push((await msg).message_id);
     });
 
-    cartMenuEnterScene.action(/cid:/, async (ctx) => {
+    cartEnterScene.action(/cid:/, async (ctx) => {
         await ctx.answerCbQuery();
         await cleanMessages(ctx);
         const idToDel = ctx.update.callback_query.data.split(':')[1];
@@ -152,14 +106,14 @@ module.exports.cartMenuEnterScene = (bot, I18n) => {
         const msg = await ctx.reply(`
 ${lan === 'ru' ? 'Товар' : 'Tovar'}: ${product[`name_${lan}`]}
 ${lan === 'ru' ? 'Количество' : 'Miqdori'}: ${product.quantity} ${qty}
-${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.price} ${lan === 'ru' ? 'сум' : `so'm`}`)
+${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.price} ${product.discount === 0 ? '' : `(${product.discount}%)`} ${lan === 'ru' ? 'сум' : `so'm`}`)
 
         ctx.session.message_filter.push((await msg).message_id);
 
         await sendCart(ctx, bot);
     });
 
-    cartMenuEnterScene.action(/cmi:/, async (ctx) => {
+    cartEnterScene.action(/cmi:/, async (ctx) => {
         await ctx.answerCbQuery();
         const idToDel = ctx.update.callback_query.data.split(':')[1];
 
@@ -173,7 +127,7 @@ ${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.pri
     });
 
 
-    cartMenuEnterScene.action(/cai:/, async (ctx) => {
+    cartEnterScene.action(/cai:/, async (ctx) => {
         await ctx.answerCbQuery();
         const idToDel = ctx.update.callback_query.data.split(':')[1];
         // const key = _.findKey(ctx.session.cart, {'id': +idToDel});
@@ -183,7 +137,7 @@ ${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.pri
     });
 
 
-    cartMenuEnterScene.action(/cri:/, async (ctx) => {
+    cartEnterScene.action(/cri:/, async (ctx) => {
         await ctx.answerCbQuery();
         const idToDel = ctx.update.callback_query.data.split(':')[1];
         // const key = _.findKey(ctx.session.cart, {'id': +idToDel});
@@ -193,16 +147,16 @@ ${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.pri
     });
 
 
-    cartMenuEnterScene.action('cartMenuBack', ctx => {
+    cartEnterScene.action('cartMenuBack', ctx => {
         return ctx.scene.enter('cartEnter');
     })
 
-    cartMenuEnterScene.action('mainMenuBack', ctx => {
+    cartEnterScene.action('mainMenuBack', ctx => {
         return ctx.scene.enter('mainMenu', {
             start: ctx.i18n.t('CartMenuClearSuccess')
         })
     })
 
-    return cartMenuEnterScene;
-
+    return cartEnterScene;
 }
+

@@ -14,13 +14,20 @@ module.exports = (bot, I18n) => {
         })
 
         ctx.session.actionIndex = 0;
+        ctx.session.currentLocationIndex = 0;
+        ctx.session.currentCategoryLocationIndex = 0;
+        ctx.session.order = {};
 
         const authMsg = [
 
-            [`${ctx.i18n.t('mainMenuCategories')}`, `${ctx.i18n.t('mainMenuSearch')}`],
+            [`${ctx.i18n.t('mainMenuCategories')}`, {
+                text: `${ctx.i18n.t("mainMenuSearch")}`,
+                switch_inline_query_current_chat: '@adfasfsfafdfds'
+            }],
             [`${ctx.i18n.t('mainMenuDiscounts')}`, `${ctx.i18n.t('mainMenuLocations')}`],
             [`${ctx.i18n.t('mainMenuOrders')}`, `${ctx.i18n.t('mainMenuCart')}`],
             [`${ctx.i18n.t('mainMenuContacts')}`, `${ctx.i18n.t('mainMenuSettings')}`],
+            [`${ctx.i18n.t('mainMenuQA')}`],
         ]
 
         if (ctx.scene.state.start) {
@@ -43,6 +50,10 @@ module.exports = (bot, I18n) => {
         return ctx.scene.enter('contacts')
     })
 
+    mainScene.hears(I18n.match('mainMenuSearch'), ctx => {
+        return ctx.scene.enter('search')
+    })
+
     mainScene.hears(I18n.match('mainMenuDiscounts'), ctx => {
         return ctx.scene.enter('actions')
     })
@@ -56,7 +67,7 @@ module.exports = (bot, I18n) => {
     })
 
     mainScene.hears(I18n.match('mainMenuCategories'), ctx => {
-        return ctx.scene.enter('categories');
+        return ctx.scene.enter('categoriesEnter');
     })
 
     mainScene.hears(I18n.match('mainMenuOrders'), ctx => {
@@ -65,6 +76,10 @@ module.exports = (bot, I18n) => {
 
     mainScene.hears(I18n.match('mainMenuCart'), ctx => {
         return ctx.scene.enter('cartEnter');
+    })
+
+    mainScene.hears(I18n.match('mainMenuQA'), ctx => {
+        return ctx.scene.enter('askQuestion');
     })
 
     mainScene.hears(I18n.match('mainMenuBack'), ctx => {

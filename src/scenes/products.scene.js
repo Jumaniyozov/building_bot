@@ -54,7 +54,6 @@ module.exports.productsScene = (bot, I18n) => {
             return ctx.scene.enter('productAddToCart');
         }
 
-        // await sendSubCategories(ctx, bot, parentId);
     });
 
 
@@ -66,6 +65,7 @@ module.exports.productAddToCartScene = (bot, I18n) => {
     const productAddToCartScene = new Scene("productAddToCart");
 
     productAddToCartScene.enter(async (ctx) => {
+        try{
 
         await cleanMessages(ctx);
         // ctx.session.message_filter.push((await ctx.message).message_id);
@@ -77,9 +77,9 @@ module.exports.productAddToCartScene = (bot, I18n) => {
         const lan = ctx.session.registered.language;
 
         let message = `
-${lan === 'ru' ? 'Товар' : 'Tovar'}: ${product[`name_${lan}`]}
-${!_.isEmpty(product[`description_${lan}`]) ?  (`${lan === 'ru' ? 'Описание' : 'Tasnif'}: ${product[`description_${lan}`]}`) : ``}
-${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.price} ${lan === 'ru' ? 'сум' : `so'm`}
+🛍️ ${lan === 'ru' ? 'Товар' : 'Tovar'}: ${product[`name_${lan}`]}
+📄 ${!_.isEmpty(product[`description_${lan}`]) ?  (`${lan === 'ru' ? 'Описание' : 'Tasnif'}: ${product[`description_${lan}`]}`) : ``}
+🏷️ ${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.price} ${lan === 'ru' ? 'сум' : `so'm`}
 
 ${ctx.i18n.t("ProductsAddToCart")}`;
 
@@ -113,6 +113,12 @@ ${ctx.i18n.t("ProductsAddToCart")}`;
         }
 
         ctx.session.message_filter.push((await msg).message_id);
+        } catch (e) {
+            console.error(e.message);
+            return ctx.scene.enter("mainMenu", {
+                start: ctx.i18n.t("mainErrorMessage"),
+            });
+        }
     });
 
 
@@ -139,10 +145,10 @@ ${ctx.i18n.t("ProductsAddToCart")}`;
                 price: product.price,
                 quantity: quantity,
                 item_total_price: !_.isEmpty(product.discount) ? ((product.price - (product.price * (product.discount / 100))) * quantity) : product.price * quantity,
-                discount: null,
+                discount: product.discount,
             }
 
-            return ctx.scene.enter('categoriesEnter', {
+            return ctx.scene.enter('products', {
                 start: ctx.i18n.t('ProductsAddedToCartSucces')
             })
 

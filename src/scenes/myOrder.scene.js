@@ -39,7 +39,12 @@ module.exports.myOrdersEnterScene = (bot, I18n) => {
 
 // listener
     myOrdersEnterScene.hears(I18n.match("ListMyOrders"), async (ctx) => {
-        ctx.scene.enter('myOrdersPending');
+       return ctx.scene.enter('myOrdersPending');
+    });
+
+// listener
+    myOrdersEnterScene.hears(I18n.match("ListMyCompleteOrders"), async (ctx) => {
+       return ctx.scene.enter('myOrdersComplete');
     });
 
 // listener
@@ -59,20 +64,20 @@ module.exports.myOrdersPendingScene = (bot, I18n) => {
 
     myOrdersPendingScene.enter(async (ctx) => {
         await cleanMessages(ctx);
-        await sendMyOrders(ctx, bot, 'Ожидает');
+        await sendMyOrders(ctx, bot, ['Ожидает', 'Отклонено', 'Принято']);
     });
 
 
     myOrdersPendingScene.action('Next', async (ctx) => {
         await cleanMessages(ctx);
         ctx.session.myOrdersIndex += 1;
-        await sendMyOrders(ctx, bot, 'Ожидает');
+        await sendMyOrders(ctx, bot, ['Ожидает', 'Отклонено', 'Принято']);
     });
 
     myOrdersPendingScene.action('Previous', async (ctx) => {
         await cleanMessages(ctx);
         ctx.session.myOrdersIndex -= 1;
-        await sendMyOrders(ctx, bot, 'Ожидает');
+        await sendMyOrders(ctx, bot, ['Ожидает', 'Отклонено', 'Принято']);
     });
 
     myOrdersPendingScene.action('myOrderMenuBack', async (ctx) => {
@@ -89,4 +94,43 @@ module.exports.myOrdersPendingScene = (bot, I18n) => {
 
 
     return myOrdersPendingScene;
+};
+
+
+module.exports.myOrdersCompleteScene = (bot, I18n) => {
+    const myOrdersCompleteScene = new Scene("myOrdersComplete");
+
+
+    myOrdersCompleteScene.enter(async (ctx) => {
+        await cleanMessages(ctx);
+        await sendMyOrders(ctx, bot, 'Закрыто');
+    });
+
+
+    myOrdersCompleteScene.action('Next', async (ctx) => {
+        await cleanMessages(ctx);
+        ctx.session.myOrdersIndex += 1;
+        await sendMyOrders(ctx, bot, 'Закрыто');
+    });
+
+    myOrdersCompleteScene.action('Previous', async (ctx) => {
+        await cleanMessages(ctx);
+        ctx.session.myOrdersIndex -= 1;
+        await sendMyOrders(ctx, bot, 'Закрыто');
+    });
+
+    myOrdersCompleteScene.action('myOrderMenuBack', async (ctx) => {
+        await ctx.answerCbQuery();
+        return ctx.scene.enter("myOrders");
+    });
+
+    myOrdersCompleteScene.action('mainMenuBack', async (ctx) => {
+        await ctx.answerCbQuery();
+        return ctx.scene.enter("mainMenu", {
+            start: ctx.i18n.t("mainMenu"),
+        });
+    });
+
+
+    return myOrdersCompleteScene;
 };

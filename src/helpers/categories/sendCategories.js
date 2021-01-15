@@ -18,14 +18,9 @@ const sendCategories = async (ctx, bot) => {
 
 
         if (_.isEmpty(categories)) {
-            const msg = bot.telegram.sendMessage(ctx.chat.id, ctx.i18n.t('CategoriesMenuEmpty'), {
-                parse_mode: "HTML",
-                reply_markup: {
-                    keyboard: ctx.session.categoriesMenuMarkup,
-                    resize_keyboard: true,
-                },
+            return ctx.scene.enter('mainMenu', {
+                start: ctx.i18n.t('CategoriesMenuEmpty')
             });
-
         } else {
 
             const categoryLength = categories.length / listLength;
@@ -48,7 +43,7 @@ const sendCategories = async (ctx, bot) => {
                     callback_data: `goToCart`
                 }],
                 [{
-                    text: `${ctx.i18n.t('CategoriesMenuBack')}`,
+                    text: `${ctx.i18n.t('mainMenuBack')}`,
                     callback_data: `mainMenuBack`
                 }],
             ];

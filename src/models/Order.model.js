@@ -34,7 +34,11 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(255),
             allowNull: false
         },
-        receiveDate: {
+        receiveDateStart: {
+            type: DataTypes.STRING(100),
+            allowNull: true
+        },
+        receiveDateEnd: {
             type: DataTypes.STRING(100),
             allowNull: true
         },

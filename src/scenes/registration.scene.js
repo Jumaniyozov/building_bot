@@ -125,18 +125,18 @@ module.exports.registrationVerifyScene = (bot, I18n) => {
                 username: ctx.from.username,
                 userId: ctx.from.id,
                 phone: ctx.session.userDetails.phoneNumber,
-                language: ctx.session.userDetails.language
+                language: ctx.session.userDetails.language,
+                registered: true
             });
 
         } catch (error) {
             console.error(error.message);
             if (error.name === 'SequelizeUniqueConstraintError') {
                 ctx.session.registered = {
-                    user: {
                         id: ctx.from.id,
                         phone: ctx.session.userDetails.phoneNumber,
-                        language: ctx.session.userDetails.language
-                    }
+                        language: ctx.session.userDetails.language,
+                        registered: true
                 };
                 return ctx.scene.enter('mainMenu', {
                     start: ctx.i18n.t('successfulRegistration', {name: ctx.from.username})
@@ -151,7 +151,7 @@ module.exports.registrationVerifyScene = (bot, I18n) => {
         })
     });
 
-    //
+
     // registrationVerifyScene.hears(I18n.match('LanguangeMenuBack'), async (ctx) => {
     //     return ctx.scene.enter('language');
     // })

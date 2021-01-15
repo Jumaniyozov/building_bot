@@ -33,6 +33,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(50),
             allowNull: false,
         },
+        registered: {
+            type: DataTypes.BOOLEAN,
+            // defaultValue: false
+        },
         'created_at': {
             type: 'DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)'
         },

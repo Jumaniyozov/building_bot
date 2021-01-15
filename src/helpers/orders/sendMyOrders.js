@@ -23,16 +23,16 @@ const sendMyOrders = async (ctx, bot, variance) => {
                 const lan = ctx.session.registered.language;
 
                 let message = `
-${lan === 'ru' ? 'ID заказа: ' : "Buyurtmaning ID si: "} ${myOrders[myOrdersIndex].order_id}
-${lan === 'ru' ? 'Время заказа: ' : "Buyurtmaning sanasi: "} ${myOrders[myOrdersIndex].date}
-${lan === 'ru' ? 'Сумма: ' : "Summasi: "} ${myOrders[myOrdersIndex].total}
+🆔 <b>${lan === 'ru' ? 'ID заказа: ' : "Buyurtmaning ID si: "}</b> ${myOrders[myOrdersIndex].order_id}
+🕰️ <b>${lan === 'ru' ? 'Время заказа: ' : "Buyurtmaning sanasi: "}</b> ${myOrders[myOrdersIndex].date}
+💵 <b>${lan === 'ru' ? 'Сумма: ' : "Summasi: "}</b> ${myOrders[myOrdersIndex].total} ${lan === 'ru' ? 'сум' : "so'm"}
 
-${lan === 'ru' ? 'Список товаров: ' : "Tovarlar ro'yhati: "}`;
+📝 <b>${lan === 'ru' ? 'Список товаров: ' : "Tovarlar ro'yhati: "}</b>`;
 
                 myOrders[myOrdersIndex].orderItems.map((el, index) => {
-                    let msg = `${lan === 'ru' ? 'имя: ' : "nomi: "} ${el[`name_${lan}`]}
-    ${lan === 'ru' ? 'цена: ' : "narxi: "} ${el[`price`]}
-    ${lan === 'ru' ? 'количество: ' : "qiymati: "} ${el[`item_qty`]}`
+                    let msg = `🛍️ <b>${lan === 'ru' ? 'имя: ' : "nomi: "}</b> ${el[`name_${lan}`]}
+    🏷️ <b>${lan === 'ru' ? 'цена: ' : "narxi: "}</b> ${el[`price`]} ${lan === 'ru' ? 'сум' : "so'm"}
+    🔖 <b>${lan === 'ru' ? 'количество: ' : "qiymati: "}</b> ${el[`item_qty`]}`
 
                     message += `
 ${index}) ${msg}
@@ -40,9 +40,13 @@ ${index}) ${msg}
                 })
 
 
-                let status = '';
-                if (myOrders[myOrdersIndex].status === 'Ожидает') {
-                    lan === 'ru' ? status = `Ожидает` : status = 'Kutilyapti'
+                let status = myOrders[myOrdersIndex].status;
+                if (status === 'Ожидает') {
+                    lan === 'ru' ? status = 'Ожидает' : status = 'Kutilyapti'
+                } else if (status === 'Отклонено'){
+                    lan === 'ru' ? status = 'Отклонено' : status = 'Rad qilingan'
+                } else if (status === 'Принято'){
+                    lan === 'ru' ? status = 'Принято' : status = 'Qabul qilingan'
                 }
 
 
