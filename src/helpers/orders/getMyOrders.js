@@ -6,7 +6,7 @@ const {User, Order} = require("../../models");
 async function getMyOrders(ctx, variance) {
     try {
         const user = await User.findOne({where: {userId: ctx.from.id}});
-        const orderId = await Order.findAll({where: {userId: user.id, status: variance}});
+        const orderId = await Order.findAll({where: {userId: user.id}});
 
         const orderList = [];
         if (!_.isEmpty(orderId)) {

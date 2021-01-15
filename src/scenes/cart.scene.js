@@ -62,38 +62,6 @@ module.exports.cartEnterScene = (bot, I18n) => {
         await sendCart(ctx, bot);
     });
 
-    cartEnterScene.action('showList', async (ctx) => {
-        await ctx.answerCbQuery();
-        await cleanMessages(ctx);
-
-        const message = await getCartList(ctx);
-
-        const msg = await bot.telegram.sendMessage(
-            ctx.chat.id,
-            message,
-            {
-                parse_mode: "HTML",
-                reply_markup: {
-                    // resize_keyboard: true,
-                    inline_keyboard: [
-                        [{
-                            text: `${ctx.i18n.t('CartMenuBack')}`,
-                            callback_data: `cartMenuBack`
-                        }],
-                        [{
-                            text: `${ctx.i18n.t('mainMenuBack')}`,
-                            callback_data: `mainMenuBack`
-                        }]
-                    ],
-                    resize_keyboard: true,
-                    one_time_keyboard: true
-                },
-            }
-        );
-
-        ctx.session.message_filter.push((await msg).message_id);
-    });
-
     cartEnterScene.action(/cid:/, async (ctx) => {
         await ctx.answerCbQuery();
         await cleanMessages(ctx);

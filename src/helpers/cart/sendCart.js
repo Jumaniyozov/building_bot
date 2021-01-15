@@ -42,16 +42,18 @@ const sendCart = async (ctx, bot) => {
 🏷️ ${el.price} ${el.discount === 0 ? '' : `(${el.discount}%)`} x ${el.quantity} = ${((el.price - (el.price * (el.discount / 100))) * el.quantity)} ${lan === 'ru' ? 'сум' : `'so'm`}
 `;
 
-            if(el.discount !== null) {
-              total +=  ((el.price - (el.price * (el.discount / 100))) * el.quantity)
+            if (el.discount !== null) {
+                total += ((el.price - (el.price * (el.discount / 100))) * el.quantity)
+                ctx.session.cartTotal = total
             } else {
-                total += el.price*el.quantity
+                total += el.price * el.quantity
+                ctx.session.cartTotal = total;
             }
 
             return [
                 [
                     {
-                        text: `${el[`name_${lan}`]} ${el.quantity} ${lan === 'ru' ? 'шт.' :  'ta'}`,
+                        text: `${el[`name_${lan}`]} ${el.quantity} ${lan === 'ru' ? 'шт.' : 'ta'}`,
                         callback_data: `cid:${el.id}`
                     }
                 ],
@@ -74,7 +76,7 @@ const sendCart = async (ctx, bot) => {
 
         message += `
 
-<b>💷 ${lan === 'ru' ? `В итоге: ${total} сум` : `Umumiy: ${total} so'm`} </b>
+<b>💷 ${lan === 'ru' ? `Итог: ${total} сумма` : `Umumiy: ${total} sum`} </b>
 `
 
         const backMenu = [
@@ -82,12 +84,6 @@ const sendCart = async (ctx, bot) => {
                 {
                     text: `${ctx.i18n.t('CartMenuMakeOrder')}`,
                     callback_data: `makeOrder`
-                }
-            ],
-            [
-                {
-                    text: `${ctx.i18n.t('CartMenuList')}`,
-                    callback_data: `showList`
                 }
             ]
         ];
@@ -140,7 +136,6 @@ const sendCart = async (ctx, bot) => {
         if (ctx.scene.state.start) {
             message = ctx.scene.state.start
         }
-
 
 
         let messaget = ctx.i18n.t('mainMenuCart');

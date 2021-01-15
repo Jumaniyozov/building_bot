@@ -138,6 +138,7 @@ ${ctx.i18n.t("ProductsAddToCart")}`;
         if (ctx.message.text.match(/^[0-9]*$/)) {
             const quantity = ctx.message.text;
             const product = await getProduct(ctx.session.productId);
+
             ctx.session.cart[`${product.id}`] = {
                 id: product.id,
                 name_ru: product.name_ru,

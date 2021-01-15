@@ -71,7 +71,7 @@ module.exports = (bot, I18n) => {
     })
 
     mainScene.hears(I18n.match('mainMenuOrders'), ctx => {
-        return ctx.scene.enter('myOrders');
+        return ctx.scene.enter('myOrdersPending');
     })
 
     mainScene.hears(I18n.match('mainMenuCart'), ctx => {

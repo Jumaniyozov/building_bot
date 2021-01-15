@@ -9,7 +9,6 @@ const sendCategories = async (ctx, bot) => {
 
     const {currentCategoryLocationIndex} = ctx.session;
 
-
     try {
 
         const listLength = 10;
@@ -25,10 +24,8 @@ const sendCategories = async (ctx, bot) => {
 
             const categoryLength = categories.length / listLength;
 
-            const list = categories
-                .slice(currentCategoryLocationIndex === 0 ? 0 : currentCategoryLocationIndex * listLength,
+            const list = categories.slice(currentCategoryLocationIndex === 0 ? 0 : currentCategoryLocationIndex * listLength,
                     currentCategoryLocationIndex === 0 ? listLength : (currentCategoryLocationIndex + 1) * listLength);
-
 
             const categoryMarkup = list.map(el => {
                 return [{
@@ -36,6 +33,7 @@ const sendCategories = async (ctx, bot) => {
                     callback_data: `gts:${el.id}`
                 }]
             })
+
 
             const backMenu = [
                 [{

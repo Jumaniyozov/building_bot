@@ -43,6 +43,14 @@ const sendSubCategories = async (ctx, bot, parentId) => {
                     text: `${ctx.i18n.t('mainMenuCart')}`,
                     callback_data: `goToCart`
                 }],
+                [{
+                    text: `${ctx.i18n.t('CategoriesMenuBack')}`,
+                    callback_data: `categoriesMenuBack`
+                }],
+                [{
+                    text: `${ctx.i18n.t('mainMenuBack')}`,
+                    callback_data: `mainMenuBack`
+                }]
 
             ];
 

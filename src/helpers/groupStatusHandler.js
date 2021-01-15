@@ -16,7 +16,7 @@ const groupStatusHandler = async (ctx, bot) => {
                     null,
                     {
                         inline_keyboard: [
-                            [{text: status, callback_data: 'noCbDDD'}],
+                            [{text: `Статус: ${status}`, callback_data: 'noCbDDD'}],
                             [{
                                 text: 'Закрыть',
                                 callback_data: `orderClose:${dataInst[1]}:${dataInst[2]}:${dataInst[3]}:${dataInst[4]}`
@@ -32,7 +32,7 @@ const groupStatusHandler = async (ctx, bot) => {
                 await Order.update({status: 'Принято'}, {where: {id: dataInst[1]}})
                     .catch(error => console.error(error.message));
 
-                let msg = dataInst[3] === 'ru' ? `<b>Ваш заказ с ID ${dataInst[4]} был принят.</b>` : `<b>Sizning ${dataInst[4]} IDlik buyurtmangiz qabul qilindi.</b>`;
+                let msg = dataInst[3] === 'ru' ? `<b>Ваш заказ  был принят.</b>` : `<b>Sizning buyurtmangiz qabul qilindi.</b>`;
 
                 bot.telegram.sendMessage(dataInst[2], msg, {parse_mode: "HTML"});
 
@@ -44,7 +44,7 @@ const groupStatusHandler = async (ctx, bot) => {
                     null,
                     {
                         inline_keyboard: [
-                            [{text: status, callback_data: 'noCbDDD'}]
+                            [{text: `Статус: ${status}`, callback_data: 'noCbDDD'}]
                         ]
                     }
                 )
@@ -52,7 +52,7 @@ const groupStatusHandler = async (ctx, bot) => {
                 await Order.update({status: 'Отклонено'}, {where: {id: dataInst[1]}})
                     .catch(error => console.error(error.message));
 
-                let msg = dataInst[3] === 'ru' ? `<b>Извините но ваш заказ с ID ${dataInst[4]} был отменен.</b>` : `<b>Kechirasiz sizning ${dataInst[4]} IDlik buyurtmangiz rad qilindi.</b>`;
+                let msg = dataInst[3] === 'ru' ? `<b>Извините но ваш заказ был отменен.</b>` : `<b>Kechirasiz sizning buyurtmangiz rad qilindi.</b>`;
 
                 bot.telegram.sendMessage(dataInst[2], msg,{parse_mode: "HTML"});
 
@@ -64,7 +64,7 @@ const groupStatusHandler = async (ctx, bot) => {
                     null,
                     {
                         inline_keyboard: [
-                            [{text: status, callback_data: 'noCbDDD'}]
+                            [{text: `Статус: ${status}`, callback_data: 'noCbDDD'}]
                         ]
                     }
                 )
@@ -72,10 +72,9 @@ const groupStatusHandler = async (ctx, bot) => {
                 await Order.update({status: 'Закрыто'}, {where: {id: dataInst[1]}})
                     .catch(error => console.error(error.message));
 
-                let msg = dataInst[3] === 'ru' ? `<b>Ваш заказ с ID: ${dataInst[4]} был закрыт.</b>` : `<b>Sizning ${dataInst[4]} IDlik buyurtmangiz yopildi.</b>`;
+                let msg = dataInst[3] === 'ru' ? `<b>Ваш заказ был закрыт.</b>` : `<b>Sizning buyurtmangiz yopildi.</b>`;
 
                 bot.telegram.sendMessage(dataInst[2], msg, {parse_mode: "HTML"});
-
 
             }
         }

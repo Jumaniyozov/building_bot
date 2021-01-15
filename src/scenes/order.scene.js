@@ -186,17 +186,13 @@ module.exports.createOrderPeriodScene = (bot, I18n) => {
             ctx.answerCbQuery();
             if (ctx.update.callback_query.data === 'ignore') {
 
-            } else if (ctx.update.callback_query.data !== 'year' ||
+            } else if (
+                ctx.update.callback_query.data !== 'year' ||
                 ctx.update.callback_query.data !== 'month') {
-                if (ctx.session.endDate) {
-                    ctx.session.reqCompanyEndPub = ctx.update.callback_query.data;
-                    return ctx.scene.enter('orderEnterPayType')
-                } else {
 
-                    ctx.session.reqCompanyStartPub = ctx.update.callback_query.data;
-                    ctx.session.endDate = true;
-                    return ctx.scene.enter('createRequestPeriod')
-                }
+                ctx.session.order.Date = ctx.update.callback_query.data;
+                return ctx.scene.enter('orderEnterPayType')
+
             }
 
         }
@@ -271,18 +267,14 @@ module.exports.orderEnterConfirmationScene = (bot, I18n) => {
 
         const {order} = ctx.session;
 
-                let message = `📝 <b>${ctx.i18n.t('CartMenuConfirm')}</b>
+        let message = `📝 <b>${ctx.i18n.t('CartMenuConfirm')}</b>
 
 
 📑 ${lan === 'ru' ? 'ФИО' : 'FIO'}: ${order.FIO}
 
-🗺️ ${lan === 'ru' ? 'Локация' : 'Manzil'}: ${typeof order.GEO === 'object' ? (
-            `${lan === 'ru' ? (`широта: ${order.GEO.latitude}, долгота: ${order.GEO.longitude}`)
-                : `uzunlik: ${order.GEO.latitude}, balandlik: ${order.GEO.longitude}`}`) : (order.GEO)}
+${typeof order.GEO === 'object' ? '' : `${lan === 'ru' ? `🗺️ Локация: ${order.GEO}` : `🗺️ Manzil: ${order.GEO}`}`} 
 
-📅 ${lan === 'ru' ? `Дата` : `Sana`}: ${lan === 'run' ?
-            (`Boshlang'ich(${ctx.session.reqCompanyStartPub}) -- Yakuniy(${ctx.session.reqCompanyEndPub})`) 
-            : (`Начальный(${ctx.session.reqCompanyStartPub}) -- Конечный(${ctx.session.reqCompanyEndPub})`)}
+📅 ${lan === 'ru' ? `Дата` : `Sana`}: ${ctx.session.order.Date}
 
 💳 ${lan === 'ru' ? `Способ оплаты` : `To'lov turi`}: ${order.PayType}
 
@@ -327,8 +319,7 @@ module.exports.orderEnterConfirmationScene = (bot, I18n) => {
                 total: ctx.session.cartTotal,
                 FIO: ctx.session.order.FIO,
                 geoLocation: GEO,
-                receiveDateStart: ctx.session.reqCompanyStartPub,
-                receiveDateEnd: ctx.session.reqCompanyEndPub,
+                receiveDate: ctx.session.order.Date,
                 paymentType: ctx.session.order.PayType,
                 status: 'Ожидает',
             }).catch(error => console.error(error));
@@ -348,7 +339,7 @@ module.exports.orderEnterConfirmationScene = (bot, I18n) => {
 📝 ФИО: ${ctx.session.order.FIO}
 📱 Номер телефона: ${ctx.session.registered.phone}
 ${typeof ctx.session.order.GEO !== 'object' ? `🗺️ Локация: ${ctx.session.order.GEO}` : ''}
-📅 Дата получения: Начальный(${ctx.session.reqCompanyStartPub})  Конечный(${ctx.session.reqCompanyEndPub})
+📅 Дата получения:${ctx.session.order.Date}
 💳 Тип оплаты: ${ctx.session.order.PayType}
 🧾 <b>Общая сумма: ${ctx.session.cartTotal} сум</b>
 `

@@ -90,7 +90,7 @@ CartMenuEnterPayType: Iltimos to'lov turinini tanlang.
 CartMenuConfirm: Iltimos ma'lumotlar to'g'riligini tasdiqlang.
 CartMenuOrderPending: Rahmat, buyurtmangiz ko'rikni kutyapti. Tez orada siz bilan hodimimiz aloqaga chiqadi.
 CartMenuOrderPayCash: 💵 Naqd
-CartMenuOrderPayCard: 💳 Elektron/Onlayn
+CartMenuOrderPayCard: 💳 Payme
 #=================================================OrderMenu
 
 
@@ -121,7 +121,7 @@ SearchMenuMsg: Iltimos qidiruvni boshlash uchun tugmani bosing.
 #=================================================AskMenu
 askQuestionConfirm: 🖅 Ha
 askQuestionAnswer: Javob berish?
-askQuestionSent: Savolingiz mutaxassislarga yuborildi
+askQuestionSent: Sizning savolingiz ko'ruvga berildi, tez orada mutaxassislarimiz savolingizga javob berishadi.
 askQuestionCall: Javob kutmoqda
 askQuestionDone: Javob berdi
 askQuestionUserMessage: Salom, savolingizga javob

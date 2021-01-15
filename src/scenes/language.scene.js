@@ -50,6 +50,7 @@ module.exports = (bot, I18n) => {
                 await User.update({language: 'ru'}, {where: {userId: ctx.from.id}})
                     .catch(error => console.error(error.message));
                 ctx.session.registered.language = 'ru';
+                ctx.session.userDetails.language = 'ru';
                 ctx.session.changingLanguage = {};
                 return ctx.scene.enter('settingsMenu', {
                     start: ctx.i18n.t('SettingsMenuChangeLanguageSuccess')
@@ -71,11 +72,13 @@ module.exports = (bot, I18n) => {
         } else {
             if (ctx.message.text === `🇷🇺 Русский`) {
                 ctx.i18n.locale('ru');
+                // ctx.session.registered.language = 'ru';
                 ctx.session.userDetails.language = 'ru';
                 return ctx.scene.enter('registrationGet');
             } else if (ctx.message.text === `🇺🇿 O'zbekcha`) {
                 ctx.i18n.locale('uz');
                 ctx.session.userDetails.language = 'uz';
+                // ctx.session.registered.language = 'uz';
                 return ctx.scene.enter('registrationGet');
             } else {
                 return ctx.scene.enter('language');

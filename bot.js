@@ -48,12 +48,9 @@ const productAddToCartScene = require('./src/scenes/products.scene').productAddT
 const cartEnterScene = require('./src/scenes/cart.scene').cartEnterScene(bot, I18n);
 const orderEnterFIOScene = require('./src/scenes/order.scene').orderEnterFIOScene(bot, I18n);
 const orderEnterGEOScene = require('./src/scenes/order.scene').orderEnterGEOScene(bot, I18n);
-// const orderEnterDATEScene = require('./src/scenes/order.scene').orderEnterDATEScene(bot, I18n);
 const createOrderPeriodScene = require('./src/scenes/order.scene').createOrderPeriodScene(bot, I18n);
 const orderEnterPayTypeScene = require('./src/scenes/order.scene').orderEnterPayTypeScene(bot, I18n);
 const orderEnterConfirmationScene = require('./src/scenes/order.scene').orderEnterConfirmationScene(bot, I18n);
-const myOrdersEnterScene = require('./src/scenes/myOrder.scene').myOrdersEnterScene(bot, I18n);
-const myOrdersCompleteScene = require('./src/scenes/myOrder.scene').myOrdersCompleteScene(bot, I18n);
 const myOrdersPendingScene = require('./src/scenes/myOrder.scene').myOrdersPendingScene(bot, I18n);
 const settingEnterScene = require('./src/scenes/setings.scene').settingsEnterScene(bot, I18n);
 const settingsChangePhoneScene = require('./src/scenes/setings.scene').settingsChangePhoneScene(bot, I18n);
@@ -70,9 +67,8 @@ const stgs = [
     registrationGetScene, categoriesEnterScene, subCategoriesEnterScene,
     productsScene, productAddToCartScene, cartEnterScene, orderEnterFIOScene,
     orderEnterFIOScene, orderEnterGEOScene, createOrderPeriodScene, orderEnterPayTypeScene,
-    orderEnterConfirmationScene, myOrdersEnterScene, searchScene,
-    myOrdersPendingScene, settingEnterScene, settingsChangePhoneScene, actionsScene,
-    myOrdersCompleteScene, askQuestionScene
+    orderEnterConfirmationScene, searchScene,
+    myOrdersPendingScene, settingEnterScene, settingsChangePhoneScene, actionsScene, askQuestionScene
 ];
 
 // Stage

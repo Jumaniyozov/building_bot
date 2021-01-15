@@ -3,7 +3,7 @@ const getMyOrders = require("./getMyOrders");
 const _ = require('lodash');
 
 
-const sendMyOrders = async (ctx, bot, variance) => {
+const sendMyOrders = async (ctx, bot) => {
 
         await bot.telegram.sendChatAction(ctx.chat.id, 'typing');
 
@@ -12,7 +12,7 @@ const sendMyOrders = async (ctx, bot, variance) => {
         try {
 
 
-            const myOrders = await getMyOrders(ctx, variance);
+            const myOrders = await getMyOrders(ctx);
 
             if (_.isEmpty(myOrders)) {
                 return ctx.scene.enter('mainMenu', {
@@ -23,21 +23,10 @@ const sendMyOrders = async (ctx, bot, variance) => {
                 const lan = ctx.session.registered.language;
 
                 let message = `
-🆔 <b>${lan === 'ru' ? 'ID заказа: ' : "Buyurtmaning ID si: "}</b> ${myOrders[myOrdersIndex].order_id}
-🕰️ <b>${lan === 'ru' ? 'Время заказа: ' : "Buyurtmaning sanasi: "}</b> ${myOrders[myOrdersIndex].date}
+🕰️ <b>${lan === 'ru' ? 'Дата заказа: ' : "Buyurtmaning sanasi: "}</b> ${myOrders[myOrdersIndex].date}
 💵 <b>${lan === 'ru' ? 'Сумма: ' : "Summasi: "}</b> ${myOrders[myOrdersIndex].total} ${lan === 'ru' ? 'сум' : "so'm"}
 
 📝 <b>${lan === 'ru' ? 'Список товаров: ' : "Tovarlar ro'yhati: "}</b>`;
-
-                myOrders[myOrdersIndex].orderItems.map((el, index) => {
-                    let msg = `🛍️ <b>${lan === 'ru' ? 'имя: ' : "nomi: "}</b> ${el[`name_${lan}`]}
-    🏷️ <b>${lan === 'ru' ? 'цена: ' : "narxi: "}</b> ${el[`price`]} ${lan === 'ru' ? 'сум' : "so'm"}
-    🔖 <b>${lan === 'ru' ? 'количество: ' : "qiymati: "}</b> ${el[`item_qty`]}`
-
-                    message += `
-${index}) ${msg}
-`
-                })
 
 
                 let status = myOrders[myOrdersIndex].status;
@@ -46,8 +35,22 @@ ${index}) ${msg}
                 } else if (status === 'Отклонено'){
                     lan === 'ru' ? status = 'Отклонено' : status = 'Rad qilingan'
                 } else if (status === 'Принято'){
-                    lan === 'ru' ? status = 'Принято' : status = 'Qabul qilingan'
+                    lan === 'ru' ? status = 'Принято но не доставлено' : status = 'Kutilyapti lekin yuborilmagan'
                 }
+
+
+                myOrders[myOrdersIndex].orderItems.map((el, index) => {
+                    let msg = `🛍️ <b>${lan === 'ru' ? 'имя: ' : "nomi: "}</b> ${el[`name_${lan}`]}
+    🏷️ <b>${lan === 'ru' ? 'цена: ' : "narxi: "}</b> ${el[`price`]} ${lan === 'ru' ? 'сум' : "so'm"}
+    🔖 <b>${lan === 'ru' ? 'количество: ' : "qiymati: "}</b> ${el[`item_qty`]}`
+
+                    message += `
+${index}) ${msg}
+
+${lan === 'ru' ? 'Статус: ' : 'Holati: '} ${status}
+`
+                })
+
 
 
                 let markupReply = []
@@ -57,14 +60,6 @@ ${index}) ${msg}
                 const nextAndPreviousMenu = [{text: '◀️', callback_data: 'Previous'}, {text: '▶️', callback_data: 'Next'}];
 
                 let backMenu = [
-                    [{
-                        text: status,
-                        callback_data: 'noCbData'
-                    }],
-                    [{
-                        text: `${ctx.i18n.t('OrderMenuBack')}`,
-                        callback_data: `myOrderMenuBack`
-                    }],
                     [{
                         text: `${ctx.i18n.t('mainMenuBack')}`,
                         callback_data: `mainMenuBack`

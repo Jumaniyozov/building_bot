@@ -101,23 +101,6 @@ module.exports.registrationVerifyScene = (bot, I18n) => {
     const registrationVerifyScene = new Scene('registrationVerify');
 
     registrationVerifyScene.enter(async ctx => {
-        // if (!_.isEmpty(ctx.session.registered)) {
-        //     return ctx.scene.enter('mainMenu', {
-        //         start: ctx.i18n.t('mainMenu')
-        //     })
-        // }
-        //
-        // const msg = bot.telegram.sendMessage(ctx.chat.id, ctx.i18n.t('RegistrationMenuSMS'), {
-        //     parse_mode: 'HTML',
-        //     reply_markup: {
-        //         keyboard: [
-        //             [`${ctx.i18n.t('RegistrationMenuBack')}`]
-        //         ],
-        //         resize_keyboard: true
-        //     }
-        // })
-        //
-        // ctx.session.message_filter.push((await msg).message_id);
 
         let user = {};
         try {
@@ -129,15 +112,16 @@ module.exports.registrationVerifyScene = (bot, I18n) => {
                 registered: true
             });
 
+            ctx.session.registered = user.dataValues;
+            ctx.session.cart = {};
+
+
         } catch (error) {
             console.error(error.message);
             if (error.name === 'SequelizeUniqueConstraintError') {
-                ctx.session.registered = {
-                        id: ctx.from.id,
-                        phone: ctx.session.userDetails.phoneNumber,
-                        language: ctx.session.userDetails.language,
-                        registered: true
-                };
+                user = User.findOne({where: {userId: ctx.from.id}})
+                ctx.session.registered = user.dataValues;
+                ctx.session.cart = {};
                 return ctx.scene.enter('mainMenu', {
                     start: ctx.i18n.t('successfulRegistration', {name: ctx.from.username})
                 })
@@ -145,7 +129,7 @@ module.exports.registrationVerifyScene = (bot, I18n) => {
             return ctx.scene.enter('registrationGet')
         }
 
-        ctx.session.registered = {user};
+
         return ctx.scene.enter('mainMenu', {
             start: ctx.i18n.t('successfulRegistration', {name: ctx.from.username})
         })
