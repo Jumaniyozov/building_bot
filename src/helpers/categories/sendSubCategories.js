@@ -2,6 +2,7 @@ const getSubCategories = require("./getSubCategories");
 const _ = require('lodash');
 const sendCategories = require("./sendCategories");
 const cleanMessages = require('../cleaner');
+const messageFilter = require("../messageFilter");
 
 
 const sendSubCategories = async (ctx, bot, parentId) => {
@@ -17,8 +18,11 @@ const sendSubCategories = async (ctx, bot, parentId) => {
         const categories = await getSubCategories(parentId);
 
         if (_.isEmpty(categories)) {
-
-            ctx.session.message_filter.push((await ctx.reply(ctx.i18n.t('SubCategoriesMenuEmpty'))).message_id);
+            try {
+                ctx.session.message_filter.push(await ctx.reply(ctx.i18n.t('SubCategoriesMenuEmpty')).message_id);
+            } catch (e) {
+                console.error(e.message);
+            }
 
             return ctx.scene.enter('categoriesEnter');
         } else {
@@ -117,7 +121,7 @@ const sendSubCategories = async (ctx, bot, parentId) => {
                         },
                     }
                 );
-                ctx.session.message_filter.push((await msg).message_id);
+                await messageFilter(ctx, msg);
             } else {
                 const msg = bot.telegram.sendMessage(
                     ctx.chat.id,
@@ -130,7 +134,7 @@ const sendSubCategories = async (ctx, bot, parentId) => {
                         },
                     }
                 );
-                ctx.session.message_filter.push((await msg).message_id);
+                await messageFilter(ctx, msg);
             }
         }
     } catch (error) {

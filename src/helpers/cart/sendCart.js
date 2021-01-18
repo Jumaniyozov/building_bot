@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const messageFilter = require("../messageFilter");
 
 
 const sendCart = async (ctx, bot) => {
@@ -157,7 +158,7 @@ const sendCart = async (ctx, bot) => {
             }
         })
 
-        ctx.session.message_filter.push((await msge).message_id);
+        await messageFilter(ctx, msge);
 
 
         const msg = await bot.telegram.sendMessage(
@@ -173,7 +174,7 @@ const sendCart = async (ctx, bot) => {
                 },
             }
         );
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
 
     } catch (error) {
         console.error(error);

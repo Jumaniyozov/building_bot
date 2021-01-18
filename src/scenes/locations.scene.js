@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const Scene = require("telegraf/scenes/base");
-const {cleanMessages, sendLocations} = require("../helpers");
+const {cleanMessages, sendLocations, messageFilter} = require("../helpers");
 
 
 module.exports = (bot, I18n) => {
@@ -29,8 +29,7 @@ ${lan === 'ru' ? 'Имя' : 'Nomi'}: ${ctx.session.currentLocation[`name_${lan}`
 ${lan === 'ru' ? 'Адресс' : 'Manzil'}: ${ctx.session.currentLocation[`description_${lan}`]}
 `)
 
-
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
 

@@ -16,8 +16,11 @@ const sendProducts = async (ctx, bot, parentId) => {
         const categories = await getProducts(parentId);
 
         if (_.isEmpty(categories)) {
-
-            ctx.session.message_filter.push((await ctx.reply(ctx.i18n.t('SubCategoriesMenuEmpty'))).message_id);
+            try {
+                ctx.session.message_filter.push(await ctx.reply(ctx.i18n.t('SubCategoriesMenuEmpty')).message_id);
+            } catch (e) {
+                console.error(e.message);
+            }
 
             return ctx.scene.enter('subCategoriesEnter');
         } else {
@@ -76,14 +79,14 @@ const sendProducts = async (ctx, bot, parentId) => {
 
             let markupReply = [];
 
-            if( productLocationIndex === 0) {
-                if(productLocationIndex + 1 < categoryLength){
+            if (productLocationIndex === 0) {
+                if (productLocationIndex + 1 < categoryLength) {
                     markupReply = menu1;
                 } else {
                     markupReply = menu4;
                 }
             } else {
-                if(productLocationIndex + 1 < categoryLength) {
+                if (productLocationIndex + 1 < categoryLength) {
                     markupReply = menu2;
                 } else {
                     markupReply = menu3;
@@ -123,6 +126,7 @@ const sendProducts = async (ctx, bot, parentId) => {
                         },
                     }
                 );
+                await messageFilter(ctx, m)
                 ctx.session.message_filter.push((await msg).message_id);
             }
         }

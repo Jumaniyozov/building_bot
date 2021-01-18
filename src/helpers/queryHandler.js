@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const messageFilter = require("./messageFilter");
 const {Product} = require('../models');
 
 const inlineQueryHandler = async (ctx, next, bot) => {
@@ -54,7 +55,7 @@ const inlineQueryHandler = async (ctx, next, bot) => {
                     });
                 }
 
-                ctx.session.message_filter.push((await msg).message_id);
+                await messageFilter(ctx, msg);
                 return
             }
         } catch (err) {

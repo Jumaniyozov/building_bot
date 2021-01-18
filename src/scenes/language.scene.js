@@ -1,5 +1,6 @@
 const Scene = require('telegraf/scenes/base');
 const _ = require('lodash');
+const {messageFilter} = require("../helpers");
 const {cleanMessages} = require("../helpers");
 const {User} = require("../models");
 
@@ -37,12 +38,12 @@ module.exports = (bot, I18n) => {
             }
         })
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
     languageScene.on('text', async (ctx) => {
         await cleanMessages(ctx)
-        ctx.session.message_filter.push((await ctx.message).message_id);
+        await messageFilter(ctx, msg);
 
         if (!_.isEmpty(ctx.session.registered)) {
             if (ctx.message.text === `🇷🇺 Русский`) {

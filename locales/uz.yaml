@@ -83,7 +83,9 @@ CartMenuEnterFIO: Iltimos o'zingizning Familiya, Ism va Sharifingizni (FISH) kir
 CartMenuEnterGEO: Iltimos yetkazib berish manzilini kiriting yoki manzil ulashing.
 CartMenuEnterGEOShare: 🗺️ Manzil ulashish.
 CartMenuEnterDATE: Iltimos yetkazib berish sanasini kiriting (kun/oy/yil).
-CartMenuEnterStartDate: Iltimos boshlang'ich sanani kiriting
+CartMenuEnterStartDate: Iltimos olish sanasini yoki vaqtini tanlang.
+CartMenuEnterChoose: 📅 Olish sanasini kiritish
+CartMenuEnterSoon: ⏲️ Tez orada
 CartMenuEnterDateMsg: Sanani tanlash uchun kun ustiga bosing.
 CartMenuEnterEndDate: Iltimos yakuniy sanani kiriting
 CartMenuEnterPayType: Iltimos to'lov turinini tanlang.
@@ -103,6 +105,9 @@ ListMyOrdersEmpt: ❌ Kechirasiz, hozircha buyurtmalaringiz yo'q.
 #=================================================SettingsMenu
 SettingsMenuChangePhone: 📲 Raqamni o'zgartirish
 SettingsMenuChangeLanguage: 🌍 Tilni o'zgartirish
+SettingsMenuChangeName: 📋 FIO(ismni)ni o'zgartirish
+SettingsMenuChangeNameMsg: Iltimos o'z ism sharifingizni kiriting.
+SettingsMenuChangeNameSuccess: Sizning ism sharifingiz muvaffaqiyatli o'zgartirildi.
 SettingsMenuBack: ⬅️ Ortga
 SettingsMenuChangePhoneMsg: 📲 Iltimos o'z raqamingizni kiriting (+998901234567).
 SettingsMenuChangePhoneSuccess: Raqamingizni muvaffaqiyatli o'zgartirildi.

@@ -1,5 +1,6 @@
 const Scene = require('telegraf/scenes/base');
 const _ = require('lodash');
+const {messageFilter} = require("../helpers");
 const {User} = require("../models");
 
 
@@ -28,7 +29,7 @@ module.exports.registrationGetScene = (bot, I18n) => {
             }
         })
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
 
@@ -59,7 +60,7 @@ module.exports.registrationGetScene = (bot, I18n) => {
             }
         })
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     })
 
     registrationScene.hears(/\+998\d{9}$/, async ctx => {
@@ -80,7 +81,7 @@ module.exports.registrationGetScene = (bot, I18n) => {
             }
         })
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     })
 
     registrationScene.hears(I18n.match('RegistrationMenuVerifyContactPhone'), async (ctx) => {

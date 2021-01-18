@@ -1,6 +1,6 @@
 const getCategories = require("./getCategories");
 const _ = require('lodash');
-const cleanMessages = require('../cleaner');
+const messageFilter = require("../messageFilter");
 
 
 const sendCategories = async (ctx, bot) => {
@@ -109,7 +109,7 @@ const sendCategories = async (ctx, bot) => {
                         },
                     }
                 );
-                ctx.session.message_filter.push((await msg).message_id);
+                await messageFilter(ctx, msg);
             } else {
                 const msg = bot.telegram.sendMessage(
                     ctx.chat.id,
@@ -122,7 +122,7 @@ const sendCategories = async (ctx, bot) => {
                         },
                     }
                 );
-                ctx.session.message_filter.push((await msg).message_id);
+                await messageFilter(ctx, msg);
             }
         }
     } catch (error) {

@@ -37,7 +37,6 @@ const sendSearchResults = async (ctx, user, offset) => {
                     include: {model: Category}
                 });
 
-                // console.log(category);
                 let prod = {};
                 prod.id = dataValues.id;
                 prod.type = 'article';

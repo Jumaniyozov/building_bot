@@ -1,10 +1,9 @@
 require('dotenv').config();
 const _ = require("lodash");
 const Scene = require("telegraf/scenes/base");
-const {calendar} = require("../helpers");
 const {Extra} = require("telegraf");
 const {OrderItem, Order, User} = require("../models");
-const {cleanMessages} = require("../helpers");
+const {cleanMessages, messageFilter, calendar} = require("../helpers");
 
 module.exports.orderEnterFIOScene = (bot, I18n) => {
     const orderEnterFIOScene = new Scene("orderEnterFIO");
@@ -25,6 +24,11 @@ module.exports.orderEnterFIOScene = (bot, I18n) => {
         ctx.session.storeMonth = d.getMonth();
         ctx.session.endDate = false;
 
+        if(ctx.session.FIO !== '' && !_.isEmpty(ctx.session.FIO)) {
+
+            return ctx.scene.enter('orderEnterGEO');
+        }
+
         const msg = bot.telegram.sendMessage(ctx.chat.id, message, {
             parse_mode: "HTML",
             reply_markup: {
@@ -33,7 +37,7 @@ module.exports.orderEnterFIOScene = (bot, I18n) => {
             },
         });
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
 
@@ -49,9 +53,9 @@ module.exports.orderEnterFIOScene = (bot, I18n) => {
 
     orderEnterFIOScene.on('text', async (ctx) => {
 
-        ctx.session.order.FIO = ctx.message.text;
+        ctx.session.FIO = ctx.message.text;
 
-        ctx.session.message_filter.push((await ctx.message.text).message_id);
+        await messageFilter(ctx, ctx.message);
         return ctx.scene.enter('orderEnterGEO');
 
     });
@@ -80,7 +84,7 @@ module.exports.orderEnterGEOScene = (bot, I18n) => {
             },
         });
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
 
@@ -99,9 +103,7 @@ module.exports.orderEnterGEOScene = (bot, I18n) => {
 
         ctx.session.order.GEO = ctx.message.location;
 
-        // ctx.session.message_filter.push((await ctx.message.text).message_id);
-
-        return ctx.scene.enter('createRequestPeriod');
+        return ctx.scene.enter('orderEnterChooseDate');
 
     });
 
@@ -110,14 +112,69 @@ module.exports.orderEnterGEOScene = (bot, I18n) => {
 
         ctx.session.order.GEO = ctx.message.text;
 
-        ctx.session.message_filter.push((await ctx.message.text).message_id);
+        await messageFilter(ctx, ctx.message);
 
-        return ctx.scene.enter('createRequestPeriod');
+        return ctx.scene.enter('orderEnterChooseDate');
 
     });
 
     return orderEnterGEOScene;
 };
+
+
+module.exports.orderEnterChooseDateScene = (bot, I18n) => {
+
+    const orderEnterChooseDateScene = new Scene('orderEnterChooseDate');
+
+    orderEnterChooseDateScene.enter(async ctx => {
+        // await cleanMessages(ctx);
+
+
+        const replyMarkup = [
+            [`${ctx.i18n.t("CartMenuEnterChoose")}`],
+            [`${ctx.i18n.t("CartMenuEnterSoon")}`],
+            [`${ctx.i18n.t("OrderMenuBack")}`],
+            [`${ctx.i18n.t("mainMenuBack")}`],
+        ]
+
+        const msge = bot.telegram.sendMessage(ctx.chat.id, `${ctx.i18n.t("CartMenuEnterStartDate")}`, {
+            parse_mode: "HTML",
+            reply_markup: {
+                keyboard: replyMarkup,
+                resize_keyboard: true
+            },
+        });
+
+        await messageFilter(ctx, msge);
+    })
+
+    orderEnterChooseDateScene.hears(I18n.match("CartMenuEnterChoose"), (ctx) => {
+        return ctx.scene.enter("createRequestPeriod");
+    });
+
+    orderEnterChooseDateScene.hears(I18n.match("CartMenuEnterSoon"), (ctx) => {
+        ctx.session.order.Date = ctx.message.text;
+        ctx.session.order.DateBase = 'В ближайшее время';
+        return ctx.scene.enter("orderEnterPayType");
+    });
+
+    orderEnterChooseDateScene.hears(I18n.match("OrderMenuBack"), (ctx) => {
+        return ctx.scene.enter("orderEnterGEO");
+    });
+
+    orderEnterChooseDateScene.hears(I18n.match("mainMenuBack"), (ctx) => {
+        return ctx.scene.enter("mainMenu", {
+            start: ctx.i18n.t("mainMenu"),
+        });
+    });
+
+    orderEnterChooseDateScene.on('text', async ctx => {
+        return ctx.scene.enter("orderEnterChooseDate");
+    })
+
+
+    return orderEnterChooseDateScene;
+}
 
 
 module.exports.createOrderPeriodScene = (bot, I18n) => {
@@ -141,28 +198,28 @@ module.exports.createOrderPeriodScene = (bot, I18n) => {
             },
         });
 
-        ctx.session.message_filter.push((await msge).message_id);
+        await messageFilter(ctx, msge);
 
         if (ctx.session.endDate) {
             const msg = ctx.reply(`⚠️ ${ctx.i18n.t('CartMenuEnterEndDate')}`, Extra.markup(markup => {
                 return markup.inlineKeyboard(calendar(ctx.session.currentMonth, ctx)).resize();
             }));
 
-            ctx.session.message_filter.push((await msg).message_id);
+            await messageFilter(ctx, msg);
         } else {
 
             const msg = ctx.reply(`❗ ${ctx.i18n.t('CartMenuEnterStartDate')}`, Extra.markup(markup => {
                 return markup.inlineKeyboard(calendar(ctx.session.currentMonth, ctx)).resize();
             }));
 
-            ctx.session.message_filter.push((await msg).message_id);
+            await messageFilter(ctx, msg);
         }
 
 
     })
 
     createRequestPeriodScene.hears(I18n.match("OrderMenuBack"), (ctx) => {
-        return ctx.scene.enter("orderEnterGEO");
+        return ctx.scene.enter("orderEnterChooseDate");
     });
 
     createRequestPeriodScene.hears(I18n.match("mainMenuBack"), (ctx) => {
@@ -191,6 +248,7 @@ module.exports.createOrderPeriodScene = (bot, I18n) => {
                 ctx.update.callback_query.data !== 'month') {
 
                 ctx.session.order.Date = ctx.update.callback_query.data;
+                ctx.session.order.DateBase = ctx.update.callback_query.data;
                 return ctx.scene.enter('orderEnterPayType')
 
             }
@@ -225,12 +283,12 @@ module.exports.orderEnterPayTypeScene = (bot, I18n) => {
             },
         });
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
 
     orderEnterPayTypeScene.hears(I18n.match("OrderMenuBack"), (ctx) => {
-        return ctx.scene.enter("createRequestPeriod");
+        return ctx.scene.enter("orderEnterChooseDate");
     });
 
     orderEnterPayTypeScene.hears(I18n.match("mainMenuBack"), (ctx) => {
@@ -239,20 +297,25 @@ module.exports.orderEnterPayTypeScene = (bot, I18n) => {
         });
     });
 
+
+    orderEnterPayTypeScene.hears(I18n.match("CartMenuOrderPayCash"), (ctx) => {
+
+        ctx.session.order.PayType = ctx.message.text;
+        ctx.session.order.PayTypeBase = 'Наличными';
+        return ctx.scene.enter('orderEnterConfirmation');
+    });
+
+
+    orderEnterPayTypeScene.hears(I18n.match("CartMenuOrderPayCard"), (ctx) => {
+
+        ctx.session.order.PayType = ctx.message.text;
+        ctx.session.order.PayTypeBase = 'Payme';
+        return ctx.scene.enter('orderEnterConfirmation');
+    });
+
     orderEnterPayTypeScene.on('text', async (ctx) => {
-
-        if (ctx.message.text === ctx.i18n.t('CartMenuOrderPayCash') ||
-            ctx.message.text === ctx.i18n.t('CartMenuOrderPayCard')) {
-
-            ctx.session.order.PayType = ctx.message.text;
-
-            ctx.session.message_filter.push((await ctx.message.text).message_id);
-
-            return ctx.scene.enter('orderEnterConfirmation');
-        } else {
-            ctx.session.message_filter.push((await ctx.message.text).message_id);
-            return ctx.scene.enter('orderEnterPayType');
-        }
+        await messageFilter(ctx, ctx.message);
+        return ctx.scene.enter('orderEnterPayType');
     });
 
     return orderEnterPayTypeScene;
@@ -264,13 +327,12 @@ module.exports.orderEnterConfirmationScene = (bot, I18n) => {
     orderEnterConfirmationScene.enter(async (ctx) => {
         const lan = ctx.session.registered.language;
 
-
         const {order} = ctx.session;
 
         let message = `📝 <b>${ctx.i18n.t('CartMenuConfirm')}</b>
 
 
-📑 ${lan === 'ru' ? 'ФИО' : 'FIO'}: ${order.FIO}
+📑 ${lan === 'ru' ? 'ФИО' : 'FIO'}: ${ctx.session.FIO}
 
 ${typeof order.GEO === 'object' ? '' : `${lan === 'ru' ? `🗺️ Локация: ${order.GEO}` : `🗺️ Manzil: ${order.GEO}`}`} 
 
@@ -295,7 +357,7 @@ ${typeof order.GEO === 'object' ? '' : `${lan === 'ru' ? `🗺️ Локация
             },
         });
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
 
@@ -317,10 +379,10 @@ ${typeof order.GEO === 'object' ? '' : `${lan === 'ru' ? `🗺️ Локация
                 userId: userId.dataValues.id,
                 subtotal: ctx.session.cartTotal,
                 total: ctx.session.cartTotal,
-                FIO: ctx.session.order.FIO,
+                FIO: ctx.session.FIO,
                 geoLocation: GEO,
-                receiveDate: ctx.session.order.Date,
-                paymentType: ctx.session.order.PayType,
+                receiveDate: ctx.session.order.DateBase,
+                paymentType: ctx.session.order.PayTypeBase,
                 status: 'Ожидает',
             }).catch(error => console.error(error));
 
@@ -336,10 +398,10 @@ ${typeof order.GEO === 'object' ? '' : `${lan === 'ru' ? `🗺️ Локация
             let msg = `
 📑 ID пользователья: ${userId.dataValues.id}
 📦 ID заказа: ${order.id}
-📝 ФИО: ${ctx.session.order.FIO}
+📝 ФИО: ${ctx.session.FIO}
 📱 Номер телефона: ${ctx.session.registered.phone}
 ${typeof ctx.session.order.GEO !== 'object' ? `🗺️ Локация: ${ctx.session.order.GEO}` : ''}
-📅 Дата получения:${ctx.session.order.Date}
+📅 Дата получения: ${ctx.session.order.DateBase}
 💳 Тип оплаты: ${ctx.session.order.PayType}
 🧾 <b>Общая сумма: ${ctx.session.cartTotal} сум</b>
 `

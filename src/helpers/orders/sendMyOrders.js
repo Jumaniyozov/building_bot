@@ -1,5 +1,5 @@
 const getMyOrders = require("./getMyOrders");
-
+const messageFilter = require('../messageFilter');
 const _ = require('lodash');
 
 
@@ -95,7 +95,7 @@ ${lan === 'ru' ? 'Статус: ' : 'Holati: '} ${status}
                         }
                     );
 
-                    ctx.session.message_filter.push((await msg).message_id);
+                    await messageFilter(ctx, msg);
                 } else {
                     const msg = bot.telegram.sendMessage(ctx.chat.id, ctx.i18n.t('ListMyOrdersEmpt'), {
                         parse_mode: "HTML",
@@ -105,7 +105,7 @@ ${lan === 'ru' ? 'Статус: ' : 'Holati: '} ${status}
                         },
                     });
 
-                    ctx.session.message_filter.push((await msg).message_id);
+                    await messageFilter(ctx, msg);
                 }
             }
         } catch

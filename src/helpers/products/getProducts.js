@@ -5,6 +5,8 @@ async function getProducts(categoryId) {
     try {
         const data = await ProductCategory.findAll({where: {categoryId}, include: Product});
 
+        // console.log(ctx.session.categoryId);
+
         if (!_.isEmpty(data)) {
             return data.map(el => el.dataValues.product.dataValues)
         } else {

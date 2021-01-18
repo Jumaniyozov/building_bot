@@ -1,5 +1,5 @@
 const Scene = require('telegraf/scenes/base');
-const {cleanMessages} = require('../helpers');
+const {cleanMessages, messageFilter} = require('../helpers');
 
 
 module.exports = (bot, I18n) => {
@@ -42,7 +42,7 @@ module.exports = (bot, I18n) => {
             }
         })
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     })
 
 

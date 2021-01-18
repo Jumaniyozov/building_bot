@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const moment = require('moment');
+const messageFilter = require("../messageFilter");
 const {Actions} = require("../../models");
 
 
@@ -30,7 +31,7 @@ ${actions[actionIndex][`description_${lan}`]}
 ${lan === 'ru' ? 'Действителен с: ' : "Ushbu sanadan: "} ${moment(actions[actionIndex].active_from).format('l')}      ${lan === 'ru' ? `До: ${moment(actions[actionIndex].active_to).format('l')}` : `${moment(actions[actionIndex].active_to).format('l')} gacha mavjud`}
 `;
 
-            let markupReply = []
+            let markupReply = [];
 
             const nextMenu = [{text: '▶️', callback_data: 'Next'}];
             const previousMenu = [{text: '◀️', callback_data: 'Previous'}];
@@ -70,8 +71,8 @@ ${lan === 'ru' ? 'Действителен с: ' : "Ushbu sanadan: "} ${moment(a
                         },
                     }
                 );
+                await messageFilter(ctx, msg);
 
-                ctx.session.message_filter.push((await msg).message_id);
             } else {
                 return ctx.scene.enter('mainMenu', {
                     start: ctx.i18n.t('ActionsMenuEmpty')

@@ -1,7 +1,7 @@
 const Scene = require('telegraf/scenes/base');
 const {cleanMessages} = require('../helpers');
 const _ = require('lodash');
-const {getCartList} = require("../helpers");
+const {messageFilter} = require("../helpers");
 const {sendCart} = require("../helpers");
 
 
@@ -76,7 +76,7 @@ ${lan === 'ru' ? 'Товар' : 'Tovar'}: ${product[`name_${lan}`]}
 ${lan === 'ru' ? 'Количество' : 'Miqdori'}: ${product.quantity} ${qty}
 ${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.price} ${product.discount === 0 ? '' : `(${product.discount}%)`} ${lan === 'ru' ? 'сум' : `so'm`}`)
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg)
 
         await sendCart(ctx, bot);
     });

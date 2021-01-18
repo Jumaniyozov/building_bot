@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const Scene = require("telegraf/scenes/base");
-const {cleanMessages, sendLocations} = require("../helpers");
+const {cleanMessages, messageFilter} = require("../helpers");
 
 
 module.exports = (bot, I18n) => {
@@ -8,40 +8,43 @@ module.exports = (bot, I18n) => {
 
     searchScene.enter(async (ctx) => {
         await cleanMessages(ctx);
-        ctx.session.message_filter.push((await ctx.message).message_id);
+        await messageFilter(ctx, ctx.message);
 
-        // let message = ctx.i18n.t("mainMenuLocations");
-
-        let replyMarkup = [
+        let replyMarkupInline = [
             [{
                 text: `${ctx.i18n.t("mainMenuSearch")}`,
                 switch_inline_query_current_chat: ''
             }],
         ];
 
-        let replyMarkupe = [[`${ctx.i18n.t("mainMenuBack")}`]];
+        let replyMarkup = [[`${ctx.i18n.t("mainMenuBack")}`]];
 
         ctx.session.currentLocationIndex = 0;
 
 
-        const msge = bot.telegram.sendMessage(ctx.chat.id, `${ctx.i18n.t("SearchMenuMsg")}`, {
+        let message = `${ctx.i18n.t("SearchMenuMsg")}`;
+
+        if (ctx.scene.state.start) {
+            message = ctx.scene.state.start
+        }
+
+        const msge = bot.telegram.sendMessage(ctx.chat.id, message, {
             parse_mode: "HTML",
             reply_markup: {
-                keyboard: replyMarkupe,
+                keyboard: replyMarkup,
                 resize_keyboard: true
             },
         });
-        ctx.session.message_filter.push((await msge).message_id);
+        await messageFilter(ctx, msge);
 
         const msg = bot.telegram.sendMessage(ctx.chat.id, `${ctx.i18n.t("mainMenuSearch")}`, {
             parse_mode: "HTML",
             reply_markup: {
-                inline_keyboard: replyMarkup,
+                inline_keyboard: replyMarkupInline,
                 resize_keyboard: true
             },
         });
-        ctx.session.message_filter.push((await msg).message_id);
-
+        await messageFilter(ctx, msg);
     });
 
     searchScene.hears(I18n.match(`mainMenuBack`), async (ctx) => {
@@ -53,6 +56,7 @@ module.exports = (bot, I18n) => {
     searchScene.action(/atcifs:/, async (ctx) => {
         await ctx.answerCbQuery();
         ctx.session.productId = ctx.update.callback_query.data.split(":")[1];
+        ctx.session.searchProduct = true;
         return ctx.scene.enter('productAddToCart');
     });
 

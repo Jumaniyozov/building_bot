@@ -21,6 +21,7 @@ const inlineQueryHandler = require('./queryHandler');
 const groupStatusHandler = require('./groupStatusHandler');
 const qaHandler = require('./qaHandler');
 const calendar = require('./calendar');
+const messageFilter = require('./messageFilter');
 
 
 module.exports = {
@@ -46,5 +47,6 @@ module.exports = {
     inlineQueryHandler,
     groupStatusHandler,
     qaHandler,
-    calendar
+    calendar,
+    messageFilter
 }

@@ -1,6 +1,7 @@
 const getLocations = require("./getLocations");
 const {Extra} = require("telegraf");
 const _ = require('lodash');
+const messageFilter = require("../messageFilter");
 
 
 const sendLocations = async (ctx, bot) => {
@@ -87,8 +88,7 @@ const sendLocations = async (ctx, bot) => {
                 );
 
                 ctx.session.currentLocation = locations[currentLocationIndex];
-
-                ctx.session.message_filter.push((await msg).message_id);
+                await messageFilter(ctx, msg);
             } else {
                 const msg = bot.telegram.sendMessage(
                     ctx.chat.id,
@@ -102,7 +102,7 @@ const sendLocations = async (ctx, bot) => {
                         },
                     }
                 );
-                ctx.session.message_filter.push((await msg).message_id);
+                await messageFilter(ctx, msg);
             }
         }
     } catch (error) {

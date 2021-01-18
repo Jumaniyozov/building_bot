@@ -1,6 +1,6 @@
 const Scene = require('telegraf/scenes/base');
 const _ = require('lodash');
-const {cleanMessages} = require("../helpers");
+const {cleanMessages, messageFilter} = require("../helpers");
 const {User} = require("../models");
 
 
@@ -13,6 +13,7 @@ module.exports.settingsEnterScene = (bot, I18n) => {
         const replyMarkup = [
             [ctx.i18n.t('SettingsMenuChangePhone')],
             [ctx.i18n.t('SettingsMenuChangeLanguage')],
+            [ctx.i18n.t('SettingsMenuChangeName')],
             [ctx.i18n.t('mainMenuBack')]
         ]
 
@@ -30,7 +31,7 @@ module.exports.settingsEnterScene = (bot, I18n) => {
             }
         })
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
     settingsEnterScene.hears(I18n.match('mainMenuBack'), ctx => {
@@ -42,6 +43,11 @@ module.exports.settingsEnterScene = (bot, I18n) => {
     settingsEnterScene.hears(I18n.match('SettingsMenuChangePhone'), ctx => {
 
         return ctx.scene.enter('settingsChangePhone');
+    })
+
+    settingsEnterScene.hears(I18n.match('SettingsMenuChangeName'), ctx => {
+
+        return ctx.scene.enter('settingsChangeName');
     })
 
     settingsEnterScene.hears(I18n.match('SettingsMenuChangeLanguage'), ctx => {
@@ -72,7 +78,7 @@ module.exports.settingsChangePhoneScene = (bot, I18n) => {
             }
         })
 
-        ctx.session.message_filter.push((await msg).message_id);
+        await messageFilter(ctx, msg);
     });
 
     settingsChangePhoneScene.hears(I18n.match('mainMenuBack'), ctx => {
@@ -90,7 +96,7 @@ module.exports.settingsChangePhoneScene = (bot, I18n) => {
 
         if (ctx.message.text.match(/\+998\d{9}$/)) {
 
-            await User.update({ phone: ctx.message.text }, {where: {userId: ctx.from.id}})
+            await User.update({phone: ctx.message.text}, {where: {userId: ctx.from.id}})
                 .catch(error => console.error(error.message));
 
             ctx.session.registered.phone = ctx.message.text;
@@ -106,4 +112,50 @@ module.exports.settingsChangePhoneScene = (bot, I18n) => {
     })
 
     return settingsChangePhoneScene;
+}
+
+module.exports.settingsChangeNameScene = (bot, I18n) => {
+    const settingsChangeNameScene = new Scene('settingsChangeName');
+
+    settingsChangeNameScene.enter(async ctx => {
+        await cleanMessages(ctx);
+
+        const replyMarkup = [
+            [ctx.i18n.t('SettingsMenuBack')],
+            [ctx.i18n.t('mainMenuBack')]
+        ]
+
+        const msg = bot.telegram.sendMessage(ctx.chat.id, ctx.i18n.t('SettingsMenuChangeNameMsg'), {
+            parse_mode: 'HTML',
+            reply_markup: {
+                keyboard: replyMarkup,
+                resize_keyboard: true
+            }
+        })
+
+        await messageFilter(ctx, msg);
+    });
+
+    settingsChangeNameScene.hears(I18n.match('mainMenuBack'), ctx => {
+        return ctx.scene.enter('mainMenu', {
+            start: ctx.i18n.t('mainMenu')
+        })
+    })
+
+    settingsChangeNameScene.hears(I18n.match('SettingsMenuBack'), ctx => {
+        return ctx.scene.enter('settingsMenu')
+    })
+
+
+    settingsChangeNameScene.on('text', async ctx => {
+
+        ctx.session.FIO = ctx.message.text;
+
+        return ctx.scene.enter('settingsMenu', {
+            start: ctx.i18n.t('SettingsMenuChangeNameSuccess')
+        })
+
+    })
+
+    return settingsChangeNameScene;
 }
