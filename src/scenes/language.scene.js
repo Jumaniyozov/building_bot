@@ -43,7 +43,7 @@ module.exports = (bot, I18n) => {
 
     languageScene.on('text', async (ctx) => {
         await cleanMessages(ctx)
-        await messageFilter(ctx, msg);
+        await messageFilter(ctx, ctx.message);
 
         if (!_.isEmpty(ctx.session.registered)) {
             if (ctx.message.text === `🇷🇺 Русский`) {
