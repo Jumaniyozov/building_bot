@@ -51,6 +51,57 @@ INSERT INTO `actions` VALUES (1,'Edisson','Edisson','Edisson — это прос
 UNLOCK TABLES;
 
 --
+-- Table structure for table `admin_sessions`
+--
+
+DROP TABLE IF EXISTS `admin_sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `admin_sessions` (
+  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `expires` int unsigned NOT NULL,
+  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  PRIMARY KEY (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `admin_sessions`
+--
+
+LOCK TABLES `admin_sessions` WRITE;
+/*!40000 ALTER TABLE `admin_sessions` DISABLE KEYS */;
+INSERT INTO `admin_sessions` VALUES ('G9ftf-iirj1iWaDSmaDK_XT2o5YDqBv9',1611944825,'{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"redirectTo\":\"/admin\",\"adminUser\":{\"id\":1,\"email\":\"admin@mail.com\",\"password\":\"$2b$10$NEXGVnecMWGi1nPVQrf59u3itl1/b6EcqSQGBixRUgvYWO1JBjcHS\"}}');
+/*!40000 ALTER TABLE `admin_sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `admin_users`
+--
+
+DROP TABLE IF EXISTS `admin_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `admin_users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `admin_users`
+--
+
+LOCK TABLES `admin_users` WRITE;
+/*!40000 ALTER TABLE `admin_users` DISABLE KEYS */;
+INSERT INTO `admin_users` VALUES (1,'admin@mail.com','$2b$10$NEXGVnecMWGi1nPVQrf59u3itl1/b6EcqSQGBixRUgvYWO1JBjcHS');
+/*!40000 ALTER TABLE `admin_users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `categories`
 --
 
@@ -152,7 +203,7 @@ CREATE TABLE `orderItems` (
   KEY `idx_order_item_order` (`orderId`) USING BTREE,
   CONSTRAINT `orderItems_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `orderItems_ibfk_2` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +212,7 @@ CREATE TABLE `orderItems` (
 
 LOCK TABLES `orderItems` WRITE;
 /*!40000 ALTER TABLE `orderItems` DISABLE KEYS */;
-INSERT INTO `orderItems` VALUES (20,3,3,15),(21,6,4,15);
+INSERT INTO `orderItems` VALUES (22,5,11,16);
 /*!40000 ALTER TABLE `orderItems` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,7 +239,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`),
   KEY `idx_order_user` (`userId`) USING BTREE,
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +248,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (15,14,140910,NULL,140910,'Даниэл','latitude: 41.367766, longitude: 69.286292','28/1/2021','Наличными','Ожидает','2021-01-16 13:10:15.460','2021-01-16 13:10:15.460');
+INSERT INTO `orders` VALUES (16,15,26837.5,NULL,26837.5,'Islom','Almazar district, Kamarniso, 9-1 B, 24','В ближайшее время','Наличными','Ожидает','2021-01-28 18:20:43.505','2021-01-28 18:20:43.505');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +312,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (3,'Ножницы deli 210mm','Ножницы deli 210mm','Ножницы deli 210mm','Ножницы deli 210mm',16990,100,'https://telegra.ph/file/07e48ee35087e9a875b89.jpg',NULL,'2021-01-16 17:40:16.367','2021-01-16 17:45:11.849'),(4,'Цветные карандаши deli 12 цветов','Цветные карандаши deli 12 цветов','Цветные карандаши deli 12 цветов','Цветные карандаши deli 12 цветов',14990,100,'https://telegra.ph/file/9ed07e0eabe73687dcd89.jpg',NULL,'2021-01-16 17:40:16.381','2021-01-16 17:45:11.904'),(7,'Сковородка berlinger haus BH-1192','Сковородка berlinger haus BH-1192','Сковородка berlinger haus BH-1192','Сковородка berlinger haus BH-1192',214990,50,'https://telegra.ph/file/183d35a577a079eb79c1b.jpg',NULL,'2021-01-16 17:41:21.937','2021-01-16 17:45:11.912'),(8,'Tea/coffee maker tescoma  1.7 литров','Tea/coffee maker tescoma  1.7 литров','Tea/coffee maker tescoma  1.7 литров','Tea/coffee maker tescoma  1.7 литров',365990,50,'https://telegra.ph/file/190d7f716cb6c963d8faf.jpg',NULL,'2021-01-16 17:41:21.954','2021-01-16 17:45:11.879'),(9,'Шпатель эластичный 16,5см','Шпатель эластичный 16,5см','Шпатель эластичный 16,5см','Шпатель эластичный 16,5см',3950,200,'https://telegra.ph/file/a4a04ac4c05d35318848b.jpg',NULL,'2021-01-16 17:42:52.216','2021-01-16 17:45:11.896'),(10,'Hayat Грунтовка акриловая 1кг','Hayat Грунтовка акриловая 1кг','Hayat Грунтовка акриловая 1кг','Hayat Грунтовка акриловая 1кг',17650,200,'https://telegra.ph/file/1555fc537bc689f21618d.jpg',NULL,'2021-01-16 17:42:52.233','2021-01-16 17:45:11.864'),(11,'Пробка для ванны с цепочкой','Пробка для ванны с цепочкой','Пробка для ванны с цепочкой','Пробка для ванны с цепочкой',5650,500,'https://telegra.ph/file/79e6e260c3379ec7641a2.jpg',NULL,'2021-01-16 17:43:56.286','2021-01-16 17:45:11.887'),(12,'Гусак плоский 17-20см','Гусак плоский 17-20см','Гусак плоский 17-20см','Гусак плоский 17-20см',32640,200,'https://telegra.ph/file/2a3682405f61d786207cc.jpg',NULL,'2021-01-16 17:43:56.304','2021-01-16 17:45:11.871');
+INSERT INTO `products` VALUES (3,'Ножницы deli 210mm','Ножницы deli 210mm','Ножницы deli 210mm','Ножницы deli 210mm',16990,100,'https://telegra.ph/file/07e48ee35087e9a875b89.jpg',NULL,'2021-01-16 17:40:16.367','2021-01-16 17:45:11.849'),(4,'Цветные карандаши deli 12 цветов','Цветные карандаши deli 12 цветов','Цветные карандаши deli 12 цветов','Цветные карандаши deli 12 цветов',14990,100,'https://telegra.ph/file/9ed07e0eabe73687dcd89.jpg',NULL,'2021-01-16 17:40:16.381','2021-01-16 17:45:11.904'),(7,'Сковородка berlinger haus BH-1192','Сковородка berlinger haus BH-1192','Сковородка berlinger haus BH-1192','Сковородка berlinger haus BH-1192',214990,50,'https://telegra.ph/file/183d35a577a079eb79c1b.jpg',NULL,'2021-01-16 17:41:21.937','2021-01-16 17:45:11.912'),(8,'Tea/coffee maker tescoma  1.7 литров','Tea/coffee maker tescoma  1.7 литров','Tea/coffee maker tescoma  1.7 литров','Tea/coffee maker tescoma  1.7 литров',365990,50,'https://telegra.ph/file/190d7f716cb6c963d8faf.jpg',NULL,'2021-01-16 17:41:21.954','2021-01-16 17:45:11.879'),(9,'Шпатель эластичный 16,5см','Шпатель эластичный 16,5см','Шпатель эластичный 16,5см','Шпатель эластичный 16,5см',3950,200,'https://telegra.ph/file/a4a04ac4c05d35318848b.jpg',NULL,'2021-01-16 17:42:52.216','2021-01-16 17:45:11.896'),(10,'Hayat Грунтовка акриловая 1кг','Hayat Грунтовка акриловая 1кг','Hayat Грунтовка акриловая 1кг','Hayat Грунтовка акриловая 1кг',17650,200,'https://telegra.ph/file/1555fc537bc689f21618d.jpg',NULL,'2021-01-16 17:42:52.233','2021-01-16 17:45:11.864'),(11,'Пробка для ванны с цепочкой','Пробка для ванны с цепочкой','Пробка для ванны с цепочкой','Пробка для ванны с цепочкой',5650,500,'https://telegra.ph/file/79e6e260c3379ec7641a2.jpg',5,'2021-01-16 17:43:56.286','2021-01-28 17:00:58.326'),(12,'Гусак плоский 17-20см','Гусак плоский 17-20см','Гусак плоский 17-20см','Гусак плоский 17-20см',32640,200,'https://telegra.ph/file/2a3682405f61d786207cc.jpg',NULL,'2021-01-16 17:43:56.304','2021-01-16 17:45:11.871');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -316,39 +367,8 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('15103371:15103371','%7B%22__language_code%22%3A%22ru%22%2C%22registered%22%3A%7B%7D%2C%22cart%22%3A%7B%7D%2C%22__scenes%22%3A%7B%22current%22%3A%22language%22%2C%22state%22%3A%7B%7D%7D%2C%22userDetails%22%3A%7B%7D%7D'),('48828613:48828613','%7B%22__language_code%22%3A%22ru%22%2C%22message_filter%22%3A%5B10307%5D%2C%22registered%22%3A%7B%22id%22%3A15%2C%22userId%22%3A48828613%2C%22username%22%3A%22JumaniyozovIslom%22%2C%22lastName%22%3Anull%2C%22firstName%22%3Anull%2C%22language%22%3A%22ru%22%2C%22phone%22%3A%22+998909731347%22%2C%22registered%22%3Atrue%2C%22created_at%22%3A%222021-01-16T13%3A19%3A53.121Z%22%2C%22updated_at%22%3A%222021-01-16T13%3A19%3A53.121Z%22%7D%2C%22cart%22%3A%7B%7D%2C%22userDetails%22%3A%7B%22language%22%3A%22ru%22%2C%22phoneNumber%22%3A%22+998909731347%22%7D%2C%22actionIndex%22%3A0%2C%22currentLocationIndex%22%3A0%2C%22currentCategoryLocationIndex%22%3A0%2C%22order%22%3A%7B%7D%2C%22currentLocation%22%3A%7B%22id%22%3A1%2C%22name_ru%22%3A%22%u041C%u0435%u0442%u0440%u043E%20%u0411%u0435%u0440%u0443%u043D%u0438%u0439%22%2C%22name_uz%22%3A%22Beruniy%20Metrosi%22%2C%22description_ru%22%3A%22%u041E%u043A%u043E%u043B%u043E%20%u043C%u0435%u0442%u0440%u043E%20%u0411%u0435%u0442%u0440%u0443%u043D%u0438%u0439%22%2C%22description_uz%22%3A%22Beruniy%20metrosi%20yonida%22%2C%22location%22%3A%22Tashkent%2C%20Almazar%2C%20Beruniy%20metro%2C%2011-22A%22%2C%22latitude%22%3A41.346%2C%22longitude%22%3A69.206%7D%2C%22curtSubCatLocId%22%3A0%2C%22__scenes%22%3A%7B%22current%22%3A%22mainMenu%22%2C%22state%22%3A%7B%22start%22%3A%22%uD83D%uDCC7%20%u0413%u043B%u0430%u0432%u043D%u043E%u0435%20%u043C%u0435%u043D%u044E%22%7D%7D%7D'),('646488802:646488802','%7B%22__language_code%22%3A%22ru%22%2C%22message_filter%22%3A%5B10261%5D%2C%22registered%22%3A%7B%22id%22%3A14%2C%22username%22%3A%22born2l0se%22%2C%22userId%22%3A646488802%2C%22phone%22%3A%22+996709432375%22%2C%22language%22%3A%22ru%22%2C%22registered%22%3Atrue%7D%2C%22cart%22%3A%7B%7D%2C%22userDetails%22%3A%7B%22language%22%3A%22ru%22%2C%22phoneNumber%22%3A%22+996709432375%22%7D%2C%22actionIndex%22%3A0%2C%22currentLocationIndex%22%3A0%2C%22currentCategoryLocationIndex%22%3A0%2C%22order%22%3A%7B%7D%2C%22curtSubCatLocId%22%3A0%2C%22subCategoryParentId%22%3A%228%22%2C%22productLocationIndex%22%3A0%2C%22categoryId%22%3A%2211%22%2C%22productId%22%3A%224%22%2C%22cartItemIndex%22%3A0%2C%22cartTotal%22%3A140910%2C%22currentMonth%22%3A0%2C%22storeMonth%22%3A0%2C%22endDate%22%3Afalse%2C%22FIO%22%3A%22%u0414%u0430%u043D%u0438%u044D%u043B%22%2C%22searchProduct%22%3Afalse%2C%22currentLocation%22%3A%7B%22id%22%3A1%2C%22name_ru%22%3A%22%u041C%u0435%u0442%u0440%u043E%20%u0411%u0435%u0440%u0443%u043D%u0438%u0439%22%2C%22name_uz%22%3A%22Beruniy%20Metrosi%22%2C%22description_ru%22%3A%22%u041E%u043A%u043E%u043B%u043E%20%u043C%u0435%u0442%u0440%u043E%20%u0411%u0435%u0442%u0440%u0443%u043D%u0438%u0439%22%2C%22description_uz%22%3A%22Beruniy%20metrosi%20yonida%22%2C%22location%22%3A%22Tashkent%2C%20Almazar%2C%20Beruniy%20metro%2C%2011-22A%22%2C%22latitude%22%3A41.346%2C%22longitude%22%3A69.206%7D%2C%22__scenes%22%3A%7B%22current%22%3A%22mainMenu%22%2C%22state%22%3A%7B%22start%22%3A%22%uD83D%uDCC7%20%u0413%u043B%u0430%u0432%u043D%u043E%u0435%20%u043C%u0435%u043D%u044E%22%7D%7D%7D');
+INSERT INTO `sessions` VALUES ('15103371:15103371','%7B%22__language_code%22%3A%22ru%22%2C%22registered%22%3A%7B%7D%2C%22cart%22%3A%7B%7D%2C%22__scenes%22%3A%7B%22current%22%3A%22language%22%2C%22state%22%3A%7B%7D%7D%2C%22userDetails%22%3A%7B%7D%7D'),('48828613:48828613','%7B%22__language_code%22%3A%22ru%22%2C%22message_filter%22%3A%5B10543%5D%2C%22registered%22%3A%7B%22id%22%3A15%2C%22userId%22%3A48828613%2C%22username%22%3A%22JumaniyozovIslom%22%2C%22lastName%22%3Anull%2C%22firstName%22%3Anull%2C%22language%22%3A%22ru%22%2C%22phone%22%3A%22+998909731347%22%2C%22registered%22%3Atrue%2C%22created_at%22%3A%222021-01-16T13%3A19%3A53.121Z%22%2C%22updated_at%22%3A%222021-01-16T13%3A19%3A53.121Z%22%7D%2C%22cart%22%3A%7B%7D%2C%22userDetails%22%3A%7B%22language%22%3A%22ru%22%2C%22phoneNumber%22%3A%22+998909731347%22%7D%2C%22actionIndex%22%3A0%2C%22currentLocationIndex%22%3A0%2C%22currentCategoryLocationIndex%22%3A0%2C%22order%22%3A%7B%7D%2C%22currentLocation%22%3A%7B%22id%22%3A1%2C%22name_ru%22%3A%22%u041C%u0435%u0442%u0440%u043E%20%u0411%u0435%u0440%u0443%u043D%u0438%u0439%22%2C%22name_uz%22%3A%22Beruniy%20Metrosi%22%2C%22description_ru%22%3A%22%u041E%u043A%u043E%u043B%u043E%20%u043C%u0435%u0442%u0440%u043E%20%u0411%u0435%u0442%u0440%u0443%u043D%u0438%u0439%22%2C%22description_uz%22%3A%22Beruniy%20metrosi%20yonida%22%2C%22location%22%3A%22Tashkent%2C%20Almazar%2C%20Beruniy%20metro%2C%2011-22A%22%2C%22latitude%22%3A41.346%2C%22longitude%22%3A69.206%7D%2C%22curtSubCatLocId%22%3A0%2C%22subCategoryParentId%22%3A%226%22%2C%22productLocationIndex%22%3A0%2C%22categoryId%22%3A%2215%22%2C%22productId%22%3A%2211%22%2C%22cartItemIndex%22%3A0%2C%22cartTotal%22%3A26837.5%2C%22currentMonth%22%3A0%2C%22storeMonth%22%3A0%2C%22endDate%22%3Afalse%2C%22FIO%22%3A%22Islom%22%2C%22__scenes%22%3A%7B%22current%22%3A%22mainMenu%22%2C%22state%22%3A%7B%22start%22%3A%22%uD83D%uDCC7%20%u0413%u043B%u0430%u0432%u043D%u043E%u0435%20%u043C%u0435%u043D%u044E%22%7D%7D%7D'),('646488802:646488802','%7B%22__language_code%22%3A%22ru%22%2C%22message_filter%22%3A%5B10261%5D%2C%22registered%22%3A%7B%22id%22%3A14%2C%22username%22%3A%22born2l0se%22%2C%22userId%22%3A646488802%2C%22phone%22%3A%22+996709432375%22%2C%22language%22%3A%22ru%22%2C%22registered%22%3Atrue%7D%2C%22cart%22%3A%7B%7D%2C%22userDetails%22%3A%7B%22language%22%3A%22ru%22%2C%22phoneNumber%22%3A%22+996709432375%22%7D%2C%22actionIndex%22%3A0%2C%22currentLocationIndex%22%3A0%2C%22currentCategoryLocationIndex%22%3A0%2C%22order%22%3A%7B%7D%2C%22curtSubCatLocId%22%3A0%2C%22subCategoryParentId%22%3A%228%22%2C%22productLocationIndex%22%3A0%2C%22categoryId%22%3A%2211%22%2C%22productId%22%3A%224%22%2C%22cartItemIndex%22%3A0%2C%22cartTotal%22%3A140910%2C%22currentMonth%22%3A0%2C%22storeMonth%22%3A0%2C%22endDate%22%3Afalse%2C%22FIO%22%3A%22%u0414%u0430%u043D%u0438%u044D%u043B%22%2C%22searchProduct%22%3Afalse%2C%22currentLocation%22%3A%7B%22id%22%3A1%2C%22name_ru%22%3A%22%u041C%u0435%u0442%u0440%u043E%20%u0411%u0435%u0440%u0443%u043D%u0438%u0439%22%2C%22name_uz%22%3A%22Beruniy%20Metrosi%22%2C%22description_ru%22%3A%22%u041E%u043A%u043E%u043B%u043E%20%u043C%u0435%u0442%u0440%u043E%20%u0411%u0435%u0442%u0440%u0443%u043D%u0438%u0439%22%2C%22description_uz%22%3A%22Beruniy%20metrosi%20yonida%22%2C%22location%22%3A%22Tashkent%2C%20Almazar%2C%20Beruniy%20metro%2C%2011-22A%22%2C%22latitude%22%3A41.346%2C%22longitude%22%3A69.206%7D%2C%22__scenes%22%3A%7B%22current%22%3A%22mainMenu%22%2C%22state%22%3A%7B%22start%22%3A%22%uD83D%uDCC7%20%u0413%u043B%u0430%u0432%u043D%u043E%u0435%20%u043C%u0435%u043D%u044E%22%7D%7D%7D');
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `transactions`
---
-
-DROP TABLE IF EXISTS `transactions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `transactions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `userId` int NOT NULL,
-  `orderId` int NOT NULL,
-  `status` float DEFAULT NULL,
-  `created_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
-  `updated_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  PRIMARY KEY (`id`),
-  KEY `idx_transaction_user` (`userId`) USING BTREE,
-  KEY `idx_transaction_order` (`orderId`) USING BTREE,
-  CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transactions`
---
-
-LOCK TABLES `transactions` WRITE;
-/*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -382,7 +402,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (14,646488802,'born2l0se',NULL,NULL,'ru','+996709432375',1,'2021-01-16 13:06:31.302','2021-01-16 13:06:31.302'),(15,48828613,'JumaniyozovIslom',NULL,NULL,'ru','+998909731347',1,'2021-01-16 13:19:53.121','2021-01-16 13:19:53.121');
+INSERT INTO `users` VALUES (15,48828613,'JumaniyozovIslom',NULL,NULL,'ru','+998909731347',1,'2021-01-16 13:19:53.121','2021-01-16 13:19:53.121');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -395,4 +415,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-28 15:17:14
+-- Dump completed on 2021-01-28 23:29:34
