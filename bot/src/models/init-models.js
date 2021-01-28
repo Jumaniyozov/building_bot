@@ -6,10 +6,10 @@ const _order = require("./Order.model");
 const _order_item = require("./OrderItem.model");
 const _product = require("./Product.model");
 const _product_category = require("./ProductCategory.model");
-const _transaction = require("./Transaction.model");
 const _user = require("./User.model");
 const _actions = require("./Actions.model");
 const _questions = require("./Question.model");
+const _admin_users = require("./AdminUser.model");
 
 
 function initModels(sequelize) {
@@ -21,35 +21,29 @@ function initModels(sequelize) {
     const product_category = _product_category(sequelize, DataTypes);
     const order = _order(sequelize, DataTypes);
     const order_item = _order_item(sequelize, DataTypes);
-    const transaction = _transaction(sequelize, DataTypes);
     const actions  = _actions(sequelize, DataTypes);
     const questions  = _questions(sequelize, DataTypes);
+    const admin_users = _admin_users(sequelize, DataTypes);
 
-    category.belongsToMany(product, {through: product_category, foreignKey: "categoryId", otherKey: "productId"});
-    product.belongsToMany(category, {through: product_category, foreignKey: "productId", otherKey: "categoryId"});
-    category.belongsTo(category, {foreignKey: "parentId"});
-    category.hasMany(category, {foreignKey: "parentId",  onDelete: 'cascade'});
-    order.belongsTo(user, {foreignKey: "userId"});
-    user.hasMany(order, {foreignKey: "userId",  onDelete: 'cascade' });
+    category.belongsToMany(product, {through: product_category, foreignKey: "categoryId", otherKey: "productId", onDelete: "CASCADE"});
+    product.belongsToMany(category, {through: product_category, foreignKey: "productId", otherKey: "categoryId", onDelete: "CASCADE"});
+    category.belongsTo(category, {foreignKey: "parentId", onDelete: "CASCADE"});
+    category.hasMany(category, {foreignKey: "parentId"});
+    order.belongsTo(user, {foreignKey: "userId", onDelete: "CASCADE"});
+    user.hasMany(order, {foreignKey: "userId"});
 
-    questions.belongsTo(user, {foreignKey: "userId"});
-    user.hasMany(questions, {foreignKey: "userId",  onDelete: 'cascade' });
+    questions.belongsTo(user, {foreignKey: "userId", onDelete: "CASCADE"});
+    user.hasMany(questions, {foreignKey: "userId"});
 
-    order_item.belongsTo(order, {foreignKey: "orderId"});
-    order.hasMany(order_item, {foreignKey: "orderId",  onDelete: 'cascade' });
-    order_item.belongsTo(product, {foreignKey: "productId"});
-    product.hasMany(order_item, {foreignKey: "productId",  onDelete: 'cascade' });
+    order_item.belongsTo(order, {foreignKey: "orderId", onDelete: "CASCADE"});
+    order.hasMany(order_item, {foreignKey: "orderId"});
+    order_item.belongsTo(product, {foreignKey: "productId", onDelete: "CASCADE"});
+    product.hasMany(order_item, {foreignKey: "productId"});
 
-    product_category.belongsTo(product, {foreignKey: "productId"});
-    product.hasMany(product_category, {foreignKey: "productId",  onDelete: 'cascade' });
-    product_category.belongsTo(category, {foreignKey: "categoryId"});
-    category.hasMany(product_category, {foreignKey: "categoryId",  onDelete: 'cascade' });
-
-
-    transaction.belongsTo(order, {foreignKey: "orderId"});
-    order.hasMany(transaction, {foreignKey: "orderId",  onDelete: 'cascade' });
-    transaction.belongsTo(user, {foreignKey: "userId"});
-    user.hasMany(transaction, {foreignKey: "userId",  onDelete: 'cascade' });
+    product_category.belongsTo(product, {foreignKey: "productId", onDelete: "CASCADE"});
+    product.hasMany(product_category, {foreignKey: "productId"});
+    product_category.belongsTo(category, {foreignKey: "categoryId", onDelete: "CASCADE"});
+    category.hasMany(product_category, {foreignKey: "categoryId"});
 
     // sequelize.sync({ force: true});
     // actions.sync({force: true});
@@ -58,8 +52,10 @@ function initModels(sequelize) {
     // order_item.sync({force: true});
     // transaction.sync({force: true});
     // questions.sync({force: true});
+    // admin_users.sync({force: true});
 
     return {
+        AdminUser: admin_users,
         User: user,
         Category: category,
         ContactData: contact_data,
@@ -68,7 +64,6 @@ function initModels(sequelize) {
         ProductCategory: product_category,
         Order: order,
         OrderItem: order_item,
-        Transaction: transaction,
         Actions: actions,
         Questions: questions
     };

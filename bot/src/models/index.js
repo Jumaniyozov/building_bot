@@ -9,10 +9,10 @@ const {
     OrderItem,
     Product,
     ProductCategory,
-    Transaction,
     User,
     Actions,
-    Questions
+    Questions,
+    AdminUser
 } = initModels(sequelize);
 
 module.exports = {
@@ -23,8 +23,8 @@ module.exports = {
     OrderItem,
     Product,
     ProductCategory,
-    Transaction,
     User,
     Actions,
-    Questions
+    Questions,
+    AdminUser
 }

@@ -22,6 +22,7 @@ const groupStatusHandler = require('./groupStatusHandler');
 const qaHandler = require('./qaHandler');
 const calendar = require('./calendar');
 const messageFilter = require('./messageFilter');
+const sequelize = require('./mysqlUtils');
 
 
 module.exports = {
@@ -48,5 +49,6 @@ module.exports = {
     groupStatusHandler,
     qaHandler,
     calendar,
-    messageFilter
+    messageFilter,
+    sequelize
 }

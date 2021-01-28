@@ -76,7 +76,7 @@ module.exports.productAddToCartScene = (bot, I18n) => {
 🛍️ ${lan === 'ru' ? 'Товар' : 'Tovar'}: ${product[`name_${lan}`]}
 📄 ${!_.isEmpty(product[`description_${lan}`]) ? (`${lan === 'ru' ? 'Описание' : 'Tasnif'}: ${product[`description_${lan}`]}`) : ``}
 🏷️ ${lan === 'ru' ? `Цена за штуку` : `Donasining narxi`}: ${product.price} ${lan === 'ru' ? 'сум' : `so'm`}
-
+${product.discount ? `🔖 ${lan === 'ru' ? `Скидка` : `Chegirma`}: ${product.discount} %\n` : ''} 
 ${ctx.i18n.t("ProductsAddToCart")}`;
 
 

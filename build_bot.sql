@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: build_bot
 -- ------------------------------------------------------
--- Server version	8.0.22
+-- Server version	8.0.23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,8 +18,6 @@
 --
 -- Table structure for table `actions`
 --
-
-use build_bot;
 
 DROP TABLE IF EXISTS `actions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -68,7 +66,7 @@ CREATE TABLE `categories` (
   UNIQUE KEY `name_ru` (`name_ru`),
   UNIQUE KEY `name_uz` (`name_uz`),
   KEY `idx_category_parent` (`parentId`) USING BTREE,
-  CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,18 +76,18 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (5,'строительство','qurilish',NULL),(6,'сантехника','santexnika',NULL),(7,'канцелярия','kontselyariya',NULL),(8,'посуда','idish',NULL),(9,'цветные карандаши','rangli qalamlar',7),(10,'ножницы','qaychilar',7),(11,'сковородки','tovonlar',8),(12,'чайники','choyniklar',8),(13,'шпатели','shpatel',5),(14,'грунтовка','gruntovka',5),(15,'ванна','vanna',6),(16,'гусак','gusak',6);
+INSERT INTO `categories` VALUES (6,'сантехника','santexnika',NULL),(7,'канцелярия','kontselyariya',NULL),(8,'посуда','idish',NULL),(9,'цветные карандаши','rangli qalamlar',7),(10,'ножницы','qaychilar',7),(11,'сковородки','tovonlar',8),(12,'чайники','choyniklar',8),(15,'ванна','vanna',6),(16,'гусак','gusak',6);
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `contactdata`
+-- Table structure for table `contactData`
 --
 
-DROP TABLE IF EXISTS `contactdata`;
+DROP TABLE IF EXISTS `contactData`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contactdata` (
+CREATE TABLE `contactData` (
   `id` int NOT NULL AUTO_INCREMENT,
   `phoneNumbers` text NOT NULL,
   `socials` text NOT NULL,
@@ -98,13 +96,13 @@ CREATE TABLE `contactdata` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contactdata`
+-- Dumping data for table `contactData`
 --
 
-LOCK TABLES `contactdata` WRITE;
-/*!40000 ALTER TABLE `contactdata` DISABLE KEYS */;
-INSERT INTO `contactdata` VALUES (2,'+998123456789\n+998987654321','twitter.com\nfacebook.com');
-/*!40000 ALTER TABLE `contactdata` ENABLE KEYS */;
+LOCK TABLES `contactData` WRITE;
+/*!40000 ALTER TABLE `contactData` DISABLE KEYS */;
+INSERT INTO `contactData` VALUES (2,'+998123456789\n+998987654321','twitter.com\nfacebook.com');
+/*!40000 ALTER TABLE `contactData` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -138,13 +136,13 @@ INSERT INTO `locations` VALUES (1,'Метро Беруний','Beruniy Metrosi',
 UNLOCK TABLES;
 
 --
--- Table structure for table `orderitems`
+-- Table structure for table `orderItems`
 --
 
-DROP TABLE IF EXISTS `orderitems`;
+DROP TABLE IF EXISTS `orderItems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `orderitems` (
+CREATE TABLE `orderItems` (
   `id` int NOT NULL AUTO_INCREMENT,
   `quantity` float DEFAULT NULL,
   `productId` int NOT NULL,
@@ -152,19 +150,19 @@ CREATE TABLE `orderitems` (
   PRIMARY KEY (`id`),
   KEY `idx_order_item_product` (`productId`) USING BTREE,
   KEY `idx_order_item_order` (`orderId`) USING BTREE,
-  CONSTRAINT `orderitems_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `orderitems_ibfk_2` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `orderItems_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orderItems_ibfk_2` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `orderitems`
+-- Dumping data for table `orderItems`
 --
 
-LOCK TABLES `orderitems` WRITE;
-/*!40000 ALTER TABLE `orderitems` DISABLE KEYS */;
-INSERT INTO `orderitems` VALUES (15,2,3,14),(16,6,4,14),(17,3,7,14),(18,3,9,14),(19,6,10,14),(20,3,3,15),(21,6,4,15);
-/*!40000 ALTER TABLE `orderitems` ENABLE KEYS */;
+LOCK TABLES `orderItems` WRITE;
+/*!40000 ALTER TABLE `orderItems` DISABLE KEYS */;
+INSERT INTO `orderItems` VALUES (20,3,3,15),(21,6,4,15);
+/*!40000 ALTER TABLE `orderItems` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -189,7 +187,7 @@ CREATE TABLE `orders` (
   `updated_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   PRIMARY KEY (`id`),
   KEY `idx_order_user` (`userId`) USING BTREE,
-  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -199,7 +197,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (14,14,886640,NULL,886640,'Даниэл','latitude: 41.367766, longitude: 69.286292','В ближайшее время','Наличными','Ожидает','2021-01-16 13:08:52.703','2021-01-16 13:08:52.703'),(15,14,140910,NULL,140910,'Даниэл','latitude: 41.367766, longitude: 69.286292','28/1/2021','Наличными','Ожидает','2021-01-16 13:10:15.460','2021-01-16 13:10:15.460');
+INSERT INTO `orders` VALUES (15,14,140910,NULL,140910,'Даниэл','latitude: 41.367766, longitude: 69.286292','28/1/2021','Наличными','Ожидает','2021-01-16 13:10:15.460','2021-01-16 13:10:15.460');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,7 +226,7 @@ CREATE TABLE `product_category` (
 
 LOCK TABLES `product_category` WRITE;
 /*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
-INSERT INTO `product_category` VALUES (4,9),(3,10),(7,11),(8,12),(9,13),(10,14),(11,15),(12,16);
+INSERT INTO `product_category` VALUES (4,9),(3,10),(7,11),(8,12),(11,15),(12,16);
 /*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,8 +282,8 @@ CREATE TABLE `question` (
   `answer` text,
   PRIMARY KEY (`id`),
   KEY `idx_qstn_user` (`userId`) USING BTREE,
-  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,8 +337,8 @@ CREATE TABLE `transactions` (
   PRIMARY KEY (`id`),
   KEY `idx_transaction_user` (`userId`) USING BTREE,
   KEY `idx_transaction_order` (`orderId`) USING BTREE,
-  CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -397,4 +395,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-18 14:55:55
+-- Dump completed on 2021-01-28 15:17:14

@@ -145,5 +145,5 @@ bot.catch((e) => {
     console.error(e.message);
 })
 
-bot.startPolling()
+module.exports = bot;
 

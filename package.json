@@ -4,17 +4,28 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon bot.js"
+    "start": "NODE_ENV=production node admin-panel/app.js",
+    "start:dev": "nodemon admin-panel/app.js"
   },
   "dependencies": {
+    "@admin-bro/express": "^3.1.0",
+    "@admin-bro/sequelize": "^1.1.2",
+    "admin-bro": "^3.3.1",
     "axios": "^0.20.0",
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-formidable": "^1.2.0",
+    "express-mysql-session": "^2.1.5",
+    "express-session": "^1.17.1",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "mysql2": "^2.1.0",
     "sequelize": "^6.3.4",
     "telegraf": "^3.38.0",
     "telegraf-i18n": "^6.6.0",
-    "telegraf-session-mysql": "^5.1.0"
+    "telegraf-session-mysql": "^5.1.0",
+    "tslib": "^2.1.0"
   }
 }

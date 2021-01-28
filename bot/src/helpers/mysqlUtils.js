@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const config    = require('../../config.json');
+const config    = require('../../../config.json');
 class MySQL {
 	constructor(host, login, password, basename) {
 		this.connection = new Sequelize(basename, login, password, {
